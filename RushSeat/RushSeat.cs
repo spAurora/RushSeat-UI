@@ -1,0 +1,253 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Net;
+using System.Reflection;
+using System.Collections;
+using System.Collections.Specialized;
+using System.Security;
+using System.Net.Security;
+using System.IO;
+using Newtonsoft.Json.Linq;
+using System.Windows.Forms;
+
+namespace RushSeat
+{
+    class RushSeat
+    {
+        private static string longinUrl = "https://seat.lib.whu.edu.cn:8443/rest/auth";  //登录API
+        private static string stats_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/room/stats2/";  // +信息分馆区域信息API  信息馆ID1
+        private static string layout_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/room/layoutByDate/";  //+6:三楼西区域 后面还有yyyy-mm-dd时间
+        private static string startTime_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/startTimesForSeat/";  // 座位开始时间API 后面还有yyyy-mm-dd时间
+        private static string endTime_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/endTimesForSeat/";  // 座位结束时间API 后面还有yyyy-mm-dd时间
+        private static string book_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/freeBook";  // 座位预约API
+        private static string search_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/searchSeats/";  // 空位检索API date+startTime+endTime
+        private static string history_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/history/1/10";  //预约记录 最后一位数为记录数目，自习助手默认为10  
+        private static string usr_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/user";  // 用户信息API
+
+
+        private static string studentID = "2015302590143";
+        private static string password = "020496";
+        private static string token = "";
+
+        public static ArrayList freeSeats = new ArrayList();
+
+        private static void SetHeaderValue(WebHeaderCollection header, string name, string value)
+        {
+            ////参见https://blog.csdn.net/chordwang/article/details/54311033
+            //BindingFlags.Instance可在搜索中包含对象实例 .NonPubilc可在搜索中包含非公共成员（即私有成员和受保护的成员）
+            var property = typeof(WebHeaderCollection).GetProperty("InnerCollection", BindingFlags.Instance | BindingFlags.NonPublic);  
+            if (property != null)
+            {
+                ////参见http://www.cnblogs.com/mrray/archive/2011/09/28/2193831.html
+                var collection = property.GetValue(header, null) as NameValueCollection;
+                collection[name] = value;
+            }
+        }
+
+        public static void SetHeaderValues(HttpWebRequest request)
+        {
+            SetHeaderValue(request.Headers, "Host", "seat.lib.whu.edu.cn:8443");
+            SetHeaderValue(request.Headers, "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+            SetHeaderValue(request.Headers, "Connection", "keep-alive");
+            SetHeaderValue(request.Headers, "Accept", "*/*");
+            SetHeaderValue(request.Headers, "User-Agent", "doSingle/11 CFNetwork/893.14.2 Darwin/17.3.0");
+            SetHeaderValue(request.Headers, "Accept-Language", "zh-cn");
+            SetHeaderValue(request.Headers, "token", token);
+            SetHeaderValue(request.Headers, "Accept-Encoding", "gzip, deflate");
+        }
+        public static string GetToken(bool test = false)
+        {
+            //request
+            string url = longinUrl + "?username=" + studentID + "&password=" + password;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            SetHeaderValues(request);
+            //不对服务端证书进行有效性校验（非第三方权威机构颁发的证书，如自己生成的）
+            ServicePointManager.ServerCertificateValidationCallback
+                = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
+            //超时
+            request.Timeout = 5000;
+
+            //response
+            //获取reponse流
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            //JSON格式化
+            Encoding encoding = Encoding.GetEncoding("UTF-8");
+            StreamReader streamReader = new StreamReader(stream, encoding);
+            string json = streamReader.ReadToEnd();
+            JObject jObject = JObject.Parse(json);
+                //登录成功
+            if (jObject["status"].ToString() == "success")
+            {
+                token = jObject["data"]["token"].ToString();
+                MessageBox.Show("登录成功");
+                return "Success";
+            }
+            else
+            {
+                MessageBox.Show(jObject["message"].ToString());
+                return jObject["message"].ToString();
+            }
+        }
+        public static bool CheckHistoryInf(bool alert = true)
+        {
+            string url = history_url;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            SetHeaderValues(request);
+            ServicePointManager.ServerCertificateValidationCallback
+                = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
+            request.Timeout = 2000;
+            
+            //response
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            Encoding encoding = Encoding.GetEncoding("UTF-8");
+            StreamReader streamReader = new StreamReader(stream, encoding);
+            string json = streamReader.ReadToEnd();
+            JObject jObject = JObject.Parse(json);
+
+            if (jObject["status"].ToString() == "success")
+            {
+                foreach (JToken res in jObject["data"]["reservations"])
+                    if (res["stat"].ToString() == "RESERVE")
+                    {
+                        MessageBox.Show("已经有有效预约，请先释放");
+                        return false;
+                    }
+            }
+            return true;
+        }
+
+        public static bool GetUserInfo()
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(usr_url);
+            request.Method = "GET";
+            SetHeaderValues(request);
+            ServicePointManager.ServerCertificateValidationCallback
+                = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
+            request.Timeout = 5000;
+
+            Config.config.textBox1.AppendText("正在获取你的信息:\n");
+
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            Encoding encoding = Encoding.GetEncoding("UTF-8");
+            StreamReader streamReader = new StreamReader(stream, encoding);
+            string json = streamReader.ReadToEnd();
+            JObject jObject = JObject.Parse(json);
+
+            if (jObject["status"].ToString() == "success")
+            {
+                Config.config.textBox1.AppendText("姓名：" + jObject["data"]["name"].ToString() + "\n");
+                Config.config.textBox1.AppendText("学号：" + jObject["data"]["username"].ToString() + "\n");
+                Config.config.textBox1.AppendText("Lastlogin:" + jObject["data"]["lastLogin"].ToString() + "\n");
+                Config.config.textBox1.AppendText("准备抢座BuildingID:"+ Run.buildingID+"\n");
+                Config.config.textBox1.AppendText("准备抢座RoomID:" + Run.roomID + "\n");
+                Config.config.textBox1.AppendText("是否只抢靠窗座位:" + Run.only_window + "\n");
+                
+                return true;
+            }
+            return false;
+        }
+        public static string SearchFreeSeat(string buildingId, string roomId, string date, string startTime, string endTime)
+        {
+            string url = search_url + date + "/" + startTime + "/" + endTime;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "POST";
+            SetHeaderValues(request);
+            ServicePointManager.ServerCertificateValidationCallback
+                = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
+            request.Timeout = 5000;
+
+            StringBuilder buffer = new StringBuilder();
+            buffer.AppendFormat("{0}={1}", "t", "1");
+            buffer.AppendFormat("&{0}={1}", "roomId", roomId);
+            buffer.AppendFormat("&{0}={1}", "buildingId", buildingId);
+            buffer.AppendFormat("&{0}={1}", "batch", "9999");
+            buffer.AppendFormat("&{0}={1}", "page", "1");
+            buffer.AppendFormat("&{0}={1}", "t2", "2");
+            byte[] data = Encoding.UTF8.GetBytes(buffer.ToString());
+            request.ContentLength = data.Length;
+            request.GetRequestStream().Write(data, 0, data.Length);
+            Config.config.textBox1.AppendText("正在获取空座信息...\n");
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            Encoding encoding = Encoding.GetEncoding("UTF-8");
+            StreamReader streamReader = new StreamReader(stream, encoding);
+            string json = streamReader.ReadToEnd();
+            JObject jObject = JObject.Parse(json);
+
+            //查到空座就将座位ID放入freeseat中
+            if (jObject["data"]["seats"].ToString() != "{}")
+            {
+                Config.config.textBox1.AppendText("success\n");
+                JToken seats = jObject["data"]["seats"];
+                //靠窗模式
+                // if (Config.checkBox3.Checked == true)
+
+                foreach (var num in seats)
+                {
+                    if (Run.only_window == "false")
+                        //if (num.First["window"].ToString() == "False")
+                            freeSeats.Add(num.First["id"].ToString());
+                    if (Run.only_window != "false")
+                        if (num.First["window"].ToString() != "False")
+                            freeSeats.Add(num.First["id"].ToString());
+                }
+                return "Success";
+            }
+            else
+            {
+                Config.config.textBox1.AppendText("No free seat!\n");
+                return "NoFreeSeat";
+            }
+        }
+
+        //订座
+        public static string BookSeat(string seatId, string date, string startTime, string endTime)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(book_url);
+            request.Method = "POST";
+            SetHeaderValues(request);
+            ServicePointManager.ServerCertificateValidationCallback
+                = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
+            request.Timeout = 5000;
+
+            StringBuilder buffer = new StringBuilder();
+            buffer.AppendFormat("{0}={1}", "t", "1");
+            buffer.AppendFormat("&{0}={1}", "startTime", startTime);
+            buffer.AppendFormat("&{0}={1}", "endTime", endTime);
+            buffer.AppendFormat("&{0}={1}", "seat", seatId);
+            buffer.AppendFormat("&{0}={1}", "date", date);
+            buffer.AppendFormat("&{0}={1}", "t2", "2");
+            byte[] data = Encoding.UTF8.GetBytes(buffer.ToString());
+            request.ContentLength = data.Length;
+            request.GetRequestStream().Write(data, 0, data.Length);
+
+            Config.config.textBox1.AppendText("正在尝试订座:\n");
+          
+            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            Stream stream = response.GetResponseStream();
+            Encoding encoding = Encoding.GetEncoding("UTF-8");
+            StreamReader streamReader = new StreamReader(stream, encoding);
+            string json = streamReader.ReadToEnd();
+            JObject jObject = JObject.Parse(json);
+            if (jObject["status"].ToString() == "success")
+            {
+                Config.config.textBox1.AppendText(jObject.ToString() + "\n");
+                return "Success";
+            }
+            else
+            {
+                Config.config.textBox1.AppendText(jObject.ToString() + "\n");
+                return "Failed";
+            }            
+        }
+        
+    }
+}

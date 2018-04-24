@@ -1,0 +1,12 @@
+C:\Users\WHY\Desktop\RushSeat\RushSeat\bin\Debug\RushSeat.exe.config
+C:\Users\WHY\Desktop\RushSeat\RushSeat\bin\Debug\RushSeat.exe
+C:\Users\WHY\Desktop\RushSeat\RushSeat\bin\Debug\RushSeat.pdb
+C:\Users\WHY\Desktop\RushSeat\RushSeat\bin\Debug\Newtonsoft.Json.dll
+C:\Users\WHY\Desktop\RushSeat\RushSeat\bin\Debug\Newtonsoft.Json.xml
+C:\Users\WHY\Desktop\RushSeat\RushSeat\obj\Debug\RushSeat.csprojResolveAssemblyReference.cache
+C:\Users\WHY\Desktop\RushSeat\RushSeat\obj\Debug\RushSeat.Login.resources
+C:\Users\WHY\Desktop\RushSeat\RushSeat\obj\Debug\RushSeat.Properties.Resources.resources
+C:\Users\WHY\Desktop\RushSeat\RushSeat\obj\Debug\RushSeat.csproj.GenerateResource.Cache
+C:\Users\WHY\Desktop\RushSeat\RushSeat\obj\Debug\RushSeat.exe
+C:\Users\WHY\Desktop\RushSeat\RushSeat\obj\Debug\RushSeat.pdb
+C:\Users\WHY\Desktop\RushSeat\RushSeat\obj\Debug\RushSeat.Config.resources
