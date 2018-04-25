@@ -10,12 +10,15 @@ namespace RushSeat
     class Run
     {
         
-        public static string startTime = "720";  //单位是分钟，12点是720
-        public static string endTime = "780";    //13点
+        public static string startTime = "";  //单位是分钟，12点是720
+        public static string endTime = "";    //13点
         public static string buildingID = "1";
         public static string roomID = "4";  //6是三楼西，4是一楼某个区域
         public static string date = "2018-04-23";  //yyyy-mm-dd
         public static string only_window = "false";
+        public static string only_conputer = "false";
+
+       
 
          public static void Start()
         {

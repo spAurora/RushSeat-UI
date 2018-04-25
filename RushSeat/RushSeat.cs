@@ -28,8 +28,8 @@ namespace RushSeat
         private static string usr_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/user";  // 用户信息API
 
 
-        private static string studentID = "2015302590143";
-        private static string password = "020496";
+        public static string studentID = "";
+        public static string password = "";
         private static string token = "";
 
         public static ArrayList freeSeats = new ArrayList();
@@ -69,7 +69,7 @@ namespace RushSeat
             ServicePointManager.ServerCertificateValidationCallback
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             //超时
-            request.Timeout = 5000;
+            request.Timeout = 50000;
 
             //response
             //获取reponse流
@@ -101,7 +101,7 @@ namespace RushSeat
             SetHeaderValues(request);
             ServicePointManager.ServerCertificateValidationCallback
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
-            request.Timeout = 2000;
+            request.Timeout = 20000;
             
             //response
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -132,6 +132,9 @@ namespace RushSeat
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
 
+            Config.config.textBox1.AppendText("软件作者本意只是为了方便学习，无意对系统造成任何不良影响\n");
+            Config.config.textBox1.AppendText("请用户不要尝试其它对预约系统的破坏行为\n");
+            Config.config.textBox1.AppendText("程序代码已经开源，详情见......\n");
             Config.config.textBox1.AppendText("正在获取你的信息:\n");
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -146,9 +149,9 @@ namespace RushSeat
                 Config.config.textBox1.AppendText("姓名：" + jObject["data"]["name"].ToString() + "\n");
                 Config.config.textBox1.AppendText("学号：" + jObject["data"]["username"].ToString() + "\n");
                 Config.config.textBox1.AppendText("Lastlogin:" + jObject["data"]["lastLogin"].ToString() + "\n");
-                Config.config.textBox1.AppendText("准备抢座BuildingID:"+ Run.buildingID+"\n");
-                Config.config.textBox1.AppendText("准备抢座RoomID:" + Run.roomID + "\n");
-                Config.config.textBox1.AppendText("是否只抢靠窗座位:" + Run.only_window + "\n");
+                //Config.config.textBox1.AppendText("准备抢座BuildingID:"+ Run.buildingID+"\n");
+                //Config.config.textBox1.AppendText("准备抢座RoomID:" + Run.roomID + "\n");
+                //Config.config.textBox1.AppendText("是否只抢靠窗座位:" + Run.only_window + "\n");
                 
                 return true;
             }
@@ -164,47 +167,69 @@ namespace RushSeat
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
 
-            StringBuilder buffer = new StringBuilder();
-            buffer.AppendFormat("{0}={1}", "t", "1");
-            buffer.AppendFormat("&{0}={1}", "roomId", roomId);
-            buffer.AppendFormat("&{0}={1}", "buildingId", buildingId);
-            buffer.AppendFormat("&{0}={1}", "batch", "9999");
-            buffer.AppendFormat("&{0}={1}", "page", "1");
-            buffer.AppendFormat("&{0}={1}", "t2", "2");
-            byte[] data = Encoding.UTF8.GetBytes(buffer.ToString());
-            request.ContentLength = data.Length;
-            request.GetRequestStream().Write(data, 0, data.Length);
-            Config.config.textBox1.AppendText("正在获取空座信息...\n");
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream stream = response.GetResponseStream();
-            Encoding encoding = Encoding.GetEncoding("UTF-8");
-            StreamReader streamReader = new StreamReader(stream, encoding);
-            string json = streamReader.ReadToEnd();
-            JObject jObject = JObject.Parse(json);
-
-            //查到空座就将座位ID放入freeseat中
-            if (jObject["data"]["seats"].ToString() != "{}")
+            try
             {
-                Config.config.textBox1.AppendText("success\n");
-                JToken seats = jObject["data"]["seats"];
-                //靠窗模式
-                // if (Config.checkBox3.Checked == true)
+                StringBuilder buffer = new StringBuilder();
+                buffer.AppendFormat("{0}={1}", "t", "1");
+                buffer.AppendFormat("&{0}={1}", "roomId", roomId);
+                buffer.AppendFormat("&{0}={1}", "buildingId", buildingId);
+                buffer.AppendFormat("&{0}={1}", "batch", "9999");
+                buffer.AppendFormat("&{0}={1}", "page", "1");
+                buffer.AppendFormat("&{0}={1}", "t2", "2");
+                byte[] data = Encoding.UTF8.GetBytes(buffer.ToString());
+                request.ContentLength = data.Length;
+                request.GetRequestStream().Write(data, 0, data.Length);
+                Config.config.textBox1.AppendText("正在获取空座信息...\n");
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                Encoding encoding = Encoding.GetEncoding("UTF-8");
+                StreamReader streamReader = new StreamReader(stream, encoding);
+                string json = streamReader.ReadToEnd();
+                JObject jObject = JObject.Parse(json);
 
-                foreach (var num in seats)
+                //查到空座就将座位ID放入freeseat中
+                if (jObject["data"]["seats"].ToString() != "{}")
                 {
-                    if (Run.only_window == "false")
-                        //if (num.First["window"].ToString() == "False")
-                            freeSeats.Add(num.First["id"].ToString());
-                    if (Run.only_window != "false")
-                        if (num.First["window"].ToString() != "False")
-                            freeSeats.Add(num.First["id"].ToString());
+                    Config.config.textBox1.AppendText("success\n");
+                    JToken seats = jObject["data"]["seats"];
+                    //靠窗模式
+                    // if (Config.checkBox3.Checked == true)
+
+
+                    foreach (var num in seats)
+                    {
+                        if (Run.only_window == "false")
+                        {
+                            if (Run.only_conputer == "false")
+                                freeSeats.Add(num.First["id"].ToString());
+                            else
+                                if (num.First["computer"].ToString() != "False")
+                                    freeSeats.Add(num.First["id"].ToString());
+                        }
+                        if (Run.only_window != "false")
+                        {
+                            if (Run.only_conputer == "false")
+                            {
+                                if (num.First["window"].ToString() != "False")
+                                    freeSeats.Add(num.First["id"].ToString());
+                            }
+                            else
+                                if (num.First["window"].ToString() != "False" && num.First["computer"].ToString() != "False")
+                                    freeSeats.Add(num.First["id"].ToString());
+                        }
+                    }
+                    return "Success";
                 }
-                return "Success";
+                else
+                {
+                    Config.config.textBox1.AppendText("No free seat!\n");
+                    return "NoFreeSeat";
+                }
             }
-            else
+            catch
             {
-                Config.config.textBox1.AppendText("No free seat!\n");
-                return "NoFreeSeat";
+                Config.config.textBox1.AppendText("获取空座信息出错...\n");
+                return "Something wrong";
             }
         }
 

@@ -19,6 +19,8 @@ namespace RushSeat
 
         private void button1_Click(object sender, EventArgs e)
         {
+            RushSeat.studentID = textBox1.Text;
+            RushSeat.password = textBox2.Text;
             string response = RushSeat.GetToken(true);
             if (response == "Success")
             {
@@ -34,6 +36,11 @@ namespace RushSeat
         }
 
         private void Login_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
