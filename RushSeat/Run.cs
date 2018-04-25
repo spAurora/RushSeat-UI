@@ -18,18 +18,26 @@ namespace RushSeat
         public static string only_window = "false";
         public static string only_conputer = "false";
 
-       
+        private static Thread thread;
 
          public static void Start()
         {
-            RushSeat.SearchFreeSeat(buildingID, roomID, date, startTime, endTime);
-            foreach (string seatID in RushSeat.freeSeats)
-            {
-                if (RushSeat.BookSeat(seatID, date, startTime, endTime) == "Success")
-                    return;
-                Thread.Sleep(5000);
-                Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位");
-            }
+
+            thread = new Thread(run);
+            thread.IsBackground = true;
+            thread.Start();
         }
+
+        public static void run()
+         {
+             RushSeat.SearchFreeSeat(buildingID, roomID, date, startTime, endTime);
+             foreach (string seatID in RushSeat.freeSeats)
+             {
+                 if (RushSeat.BookSeat(seatID, date, startTime, endTime) == "Success")
+                     return;
+                 Thread.Sleep(5000);
+                 Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位");
+             }
+         }
     }
 }

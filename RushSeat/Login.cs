@@ -29,7 +29,7 @@ namespace RushSeat
                 {
                     Config config = new Config();
                     config.Show();
-                    config.textBox1.AppendText("登录成功!\n");
+                    // config.textBox1.AppendText("登录成功!\n");
                     RushSeat.GetUserInfo();
                 }
             }

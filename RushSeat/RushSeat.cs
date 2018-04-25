@@ -32,6 +32,8 @@ namespace RushSeat
         public static string password = "";
         private static string token = "";
 
+        public static DateTime time;
+
         public static ArrayList freeSeats = new ArrayList();
 
         private static void SetHeaderValue(WebHeaderCollection header, string name, string value)
@@ -58,6 +60,47 @@ namespace RushSeat
             SetHeaderValue(request.Headers, "token", token);
             SetHeaderValue(request.Headers, "Accept-Encoding", "gzip, deflate");
         }
+
+        //倒计时
+        public static void Wait(string hour, string minute, string second, bool enter = true)
+        {
+            time = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + hour + ":" + minute + ":" + second);
+            if (Config.config.comboBox1.SelectedIndex == 1)
+            {
+                //明天
+                //time = time.AddDays(1);
+            }
+
+            //bool first_line = true;
+            //int index = Config.config.textBox1.GetFirstCharIndexOfCurrentLine();
+            
+            //进入后台线程
+            Config.config.backgroundWorker1.RunWorkerAsync(enter);
+
+            while (true)
+            {
+                TimeSpan delta = time.Subtract(DateTime.Now);
+                //Config.config.textBox1.AppendText("\r\n\r\n正在等待系统开放，剩余" + ((int)delta.TotalSeconds).ToString() + "秒\r\n");
+                //if (first_line)
+                //{
+                //    Config.config.textBox1.AppendText("\r\n\r\n正在等待系统开放，剩余" + ((int)delta.TotalSeconds).ToString() + "秒\r\n");
+                //    first_line = false;
+                //}
+                //else
+                //{
+                //    Config.config.textBox1.Select(index, Config.config.textBox1.TextLength - index - 1);
+                //    Config.config.textBox1.SelectedText = "\r\n\r\n正在等待系统开放，剩余" + ((int)delta.TotalSeconds).ToString() + "秒\r\n";
+                //}
+                if (delta.TotalSeconds < 0)
+                {
+                    Config.config.backgroundWorker1.CancelAsync();
+                    break;
+                }
+            }
+            return;
+
+        }
+
         public static string GetToken(bool test = false)
         {
             //request

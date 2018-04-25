@@ -43,6 +43,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // textBox1
@@ -184,6 +185,10 @@
             this.textBox5.TabIndex = 114;
             this.textBox5.Text = "1320";
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -229,5 +234,6 @@
         public System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox textBox4;
         private System.Windows.Forms.TextBox textBox5;
+        public System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
