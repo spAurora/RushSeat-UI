@@ -35,7 +35,7 @@ namespace RushSeat
              {
                  if (RushSeat.BookSeat(seatID, date, startTime, endTime) == "Success")
                      return;
-                 Thread.Sleep(5000);
+                 Thread.Sleep(500);
                  Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位");
              }
          }
