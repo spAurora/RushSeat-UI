@@ -65,24 +65,22 @@ namespace RushSeat
         //倒计时
         public static void Wait(string hour, string minute, string second, bool enter = true)
         {
+            TimeSpan delta2;
             time = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + hour + ":" + minute + ":" + second);
-            
             //后台倒计时线程启动
-            //Config.config.backgroundWorker1.RunWorkerAsync(enter);
-
-            while (true)
-            {
-                TimeSpan delta = time.Subtract(DateTime.Now);
-                //Config.config.textBox1.AppendText(delta.ToString() + "\n");
-                if (delta.TotalSeconds < 0)
+            Config.config.backgroundWorker1.RunWorkerAsync(enter);
+            while(true)
+            {               
+                delta2 = RushSeat.time.Subtract(DateTime.Now);
+                if (delta2.TotalSeconds < 0)
                 {
                     Config.config.backgroundWorker1.CancelAsync();
                     break;
                 }
-                Thread.Sleep(10);
+                //防止控件假死
+                Application.DoEvents();
             }
             return;
-
         }
 
         public static string GetToken(bool test = false)
@@ -111,7 +109,7 @@ namespace RushSeat
             if (jObject["status"].ToString() == "success")
             {
                 token = jObject["data"]["token"].ToString();
-                MessageBox.Show("登录成功");
+                //MessageBox.Show("登录成功");
                 return "Success";
             }
             else

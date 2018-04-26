@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Diagnostics;
 
 namespace RushSeat
 {
@@ -20,6 +21,8 @@ namespace RushSeat
 
         private static Thread thread;
 
+        private static bool success = false;
+
          public static void Start()
         {
 
@@ -34,10 +37,28 @@ namespace RushSeat
              foreach (string seatID in RushSeat.freeSeats)
              {
                  if (RushSeat.BookSeat(seatID, date, startTime, endTime) == "Success")
-                     return;
+                 {
+                     success = true;
+                     break;
+                 }
                  Thread.Sleep(500);
                  Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位");
              }
+            //成功抢座后自动关机
+            if(success)
+            {
+                if (Config.config.checkBox3.Checked)
+                {
+                    Config.config.textBox1.AppendText("抢座成功，2min后自动关机");
+                    Config.config.textBox1.AppendText("如果想取消自动关机请在控制台自行输入 shutdown -a");
+                    Process.Start("shutdown.exe", "-s -t " + "120");
+                }
+                else
+                {
+                    Config.config.textBox1.AppendText("抢座成功");
+                }
+
+            }
          }
     }
 }

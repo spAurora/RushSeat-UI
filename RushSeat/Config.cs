@@ -15,6 +15,7 @@ namespace RushSeat
     public partial class Config : Form
     {
         public static Config config;
+        public static TimeSpan delta;
 
         private bool first = true;
         private int index;
@@ -22,12 +23,11 @@ namespace RushSeat
         {
             InitializeComponent();
             config = this;
-            //CheckForIllegalCrossThreadCalls = false;  //不检查其它线程对控件的非法访问
+            CheckForIllegalCrossThreadCalls = false;  //不检查其它线程对控件的非法访问
         }
 
         private void Config_Load(object sender, EventArgs e)
         {
-            backgroundWorker2.RunWorkerAsync();
 
             if (config.checkBox1.Checked)
                 Run.only_window = "true";
@@ -56,23 +56,50 @@ namespace RushSeat
             if (Config.config.comboBox1.SelectedIndex == 1)
             {
                 Run.date = comboBox1.SelectedValue.ToString();
-                RushSeat.Wait("23", "15", "00");
+                RushSeat.Wait("22", "15", "10");
+
+                //重新登录
+                string response = RushSeat.GetToken(true);
+                if (response == "Success")
+                {
+                    //是否已预约检查
+                    if (RushSeat.CheckHistoryInf() == true)
+                    {
+                        //Config config = new Config();
+                        //config.Show();
+                        textBox1.AppendText("再次登录成功!\n");
+                        //RushSeat.GetUserInfo();
+                        Run.Start();
+                    }
+                }
+                else
+                {
+                    textBox1.AppendText(response);
+                }
+
+                
+                
+            }
+            else //预约今天的
+            {
+                Run.date = comboBox1.SelectedValue.ToString();
                 Run.Start();
             }
         }
 
         private void backgroundWorker1_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
         {
-            backgroundWorker1.RunWorkerAsync();
-            // while (true)
+            while (true)
            {
+               delta = RushSeat.time.Subtract(DateTime.Now);
+               backgroundWorker1.ReportProgress(0, "");
                 if (backgroundWorker1.CancellationPending)
                 {
                     e.Cancel = true;
                     return;
                 }
-                backgroundWorker1.WorkerReportsProgress = true;
-                backgroundWorker1.ReportProgress(0, "");
+                //backgroundWorker1.WorkerReportsProgress = true;
+                
                 if (backgroundWorker1.CancellationPending)
                 {
                     e.Cancel = true;
@@ -84,31 +111,13 @@ namespace RushSeat
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            MessageBox.Show((string)e.UserState);
-           // textBox1.AppendText("12312");
+            //MessageBox.Show((string)e.UserState);
+           textBox1.AppendText("剩余时间: " + delta.ToString()+ "\n");
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            textBox1.AppendText("12312");
-        }
-
-        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
-        {
-            int i = 0;
-            backgroundWorker2.ReportProgress(0, "");
-            i++;
-        }
-
-        private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            MessageBox.Show("666");
-            textBox1.AppendText("1");
-        }
-
-        private void backgroundWorker2_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            textBox1.AppendText("2");
+           textBox1.AppendText("等待完成...");
         }
     }
 }
