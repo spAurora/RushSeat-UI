@@ -12,9 +12,13 @@ namespace RushSeat
 {
     public partial class Login : Form
     {
+
+        public static Login login;
+
         public Login()
         {
             InitializeComponent();
+            login = this;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -27,9 +31,11 @@ namespace RushSeat
                 //是否已预约检查
                 if (RushSeat.CheckHistoryInf() == true)
                 {
+                    Hide();
+
                     Config config = new Config();
                     config.Show();
-                    // config.textBox1.AppendText("登录成功!\n");
+                    config.textBox1.AppendText("登录成功!\n");
                     RushSeat.GetUserInfo();
                 }
             }

@@ -94,7 +94,7 @@ namespace RushSeat
             ServicePointManager.ServerCertificateValidationCallback
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             //超时
-            request.Timeout = 50000;
+            request.Timeout = 10000;
 
             //response
             //获取reponse流
@@ -157,9 +157,10 @@ namespace RushSeat
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
 
-            Config.config.textBox1.AppendText("软件作者本意只是为了方便学习，无意对系统造成任何不良影响\n");
+            Config.config.textBox1.AppendText("软件作者本意只是为了方便学习，无意对预约系统造成任何不良影响\n");
             Config.config.textBox1.AppendText("请用户不要尝试其它对预约系统的破坏行为\n");
-            Config.config.textBox1.AppendText("程序代码已经开源，详情见......\n");
+            Config.config.textBox1.AppendText("程序代码已经开源，详情见https://github.com/spAurora/RushSeat-UI.git\n");
+            Config.config.textBox1.AppendText("---------------------------------------\n");
             Config.config.textBox1.AppendText("正在获取你的信息:\n");
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -174,9 +175,7 @@ namespace RushSeat
                 Config.config.textBox1.AppendText("姓名：" + jObject["data"]["name"].ToString() + "\n");
                 Config.config.textBox1.AppendText("学号：" + jObject["data"]["username"].ToString() + "\n");
                 Config.config.textBox1.AppendText("Lastlogin:" + jObject["data"]["lastLogin"].ToString() + "\n");
-                //Config.config.textBox1.AppendText("准备抢座BuildingID:"+ Run.buildingID+"\n");
-                //Config.config.textBox1.AppendText("准备抢座RoomID:" + Run.roomID + "\n");
-                //Config.config.textBox1.AppendText("是否只抢靠窗座位:" + Run.only_window + "\n");
+                Config.config.textBox1.AppendText("---------------------------------------\n");
                 
                 return true;
             }

@@ -50,20 +50,20 @@
             // textBox1
             // 
             this.textBox1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.textBox1.Location = new System.Drawing.Point(65, 381);
+            this.textBox1.Location = new System.Drawing.Point(115, 381);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(1131, 261);
+            this.textBox1.Size = new System.Drawing.Size(1105, 261);
             this.textBox1.TabIndex = 100;
             this.textBox1.TabStop = false;
             // 
             // textBox2
             // 
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Location = new System.Drawing.Point(65, 329);
+            this.textBox2.Location = new System.Drawing.Point(115, 333);
             this.textBox2.Margin = new System.Windows.Forms.Padding(4);
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
@@ -223,7 +223,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1280, 677);
+            this.ClientSize = new System.Drawing.Size(1320, 677);
             this.Controls.Add(this.checkBox3);
             this.Controls.Add(this.textBox5);
             this.Controls.Add(this.textBox4);
@@ -242,7 +242,9 @@
             this.Controls.Add(this.textBox1);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Config";
-            this.Text = "Config";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "RushSeat V1.0";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Config_FormClosed);
             this.Load += new System.EventHandler(this.Config_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
