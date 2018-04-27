@@ -68,6 +68,7 @@ namespace RushSeat
         {
             TimeSpan delta2;
             time = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + hour + ":" + minute + ":" + second);
+            Config.config.textBox1.AppendText("等待系统开放:\n");
             //后台倒计时线程启动
             Config.config.backgroundWorker1.RunWorkerAsync(enter);
             while(true)
