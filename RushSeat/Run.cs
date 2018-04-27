@@ -49,13 +49,13 @@ namespace RushSeat
             {
                 if (Config.config.checkBox3.Checked)
                 {
-                    Config.config.textBox1.AppendText("抢座成功，2min后自动关机");
+                    Config.config.textBox1.AppendText("2min后自动关机");
                     Config.config.textBox1.AppendText("如果想取消自动关机请在控制台自行输入 shutdown -a");
                     Process.Start("shutdown.exe", "-s -t " + "120");
                 }
                 else
                 {
-                    Config.config.textBox1.AppendText("抢座成功");
+                    //Config.config.textBox1.AppendText("订座成功");
                 }
 
             }

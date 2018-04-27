@@ -168,7 +168,7 @@ namespace RushSeat
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             //MessageBox.Show((string)e.UserState);
-           textBox1.AppendText("剩余时间: " + delta.ToString()+ "\n");
+           textBox1.AppendText("剩余时间: " + (delta.ToString()).Substring(0, 8)+ "\n");
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

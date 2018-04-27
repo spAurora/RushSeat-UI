@@ -27,6 +27,7 @@ namespace RushSeat
         private static string search_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/searchSeats/";  // 空位检索API date+startTime+endTime
         private static string history_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/history/1/10";  //预约记录 最后一位数为记录数目，自习助手默认为10  
         private static string usr_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/user";  // 用户信息API
+        private static string cancel_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/cancel/";  // 取消预约API + 预约ID
 
 
         public static string studentID = "";
@@ -288,7 +289,9 @@ namespace RushSeat
             JObject jObject = JObject.Parse(json);
             if (jObject["status"].ToString() == "success")
             {
-                Config.config.textBox1.AppendText(jObject.ToString() + "\n");
+                Config.config.textBox1.AppendText("订座成功\n");
+                Config.config.textBox1.AppendText("时间：" + jObject["data"]["onDate"].ToString() + ", " + jObject["data"]["begin"].ToString() + "~" + jObject["data"]["end"].ToString() + "\n");
+                Config.config.textBox1.AppendText("地点：" + jObject["data"]["location"].ToString() + "\n");
                 return "Success";
             }
             else
@@ -297,6 +300,8 @@ namespace RushSeat
                 return "Failed";
             }            
         }
+
+
         
     }
 }
