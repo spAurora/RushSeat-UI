@@ -17,8 +17,8 @@ namespace RushSeat
         public static Config config;
         public static TimeSpan delta;
 
-        private bool first = true;
-        private int index;
+        public ArrayList startTime = new ArrayList();
+
         public Config()
         {
             InitializeComponent();
@@ -34,11 +34,26 @@ namespace RushSeat
             if (config.checkBox2.Checked)
                 Run.only_window = "true";
             //Run.date = comboBox1.SelectedValue.ToString();
-            Run.roomID = textBox3.Text;
-            Run.startTime = textBox4.Text;
-            Run.endTime = textBox5.Text;
 
-            
+            ArrayList xt_list = new ArrayList();
+            xt_list.Add(new DictionaryEntry("1", "只包含2~4楼和1楼云桌面"));
+            xt_list.Add(new DictionaryEntry("5", "一楼创新学习讨论区"));
+            xt_list.Add(new DictionaryEntry("4", "一楼3C创客空间"));
+            xt_list.Add(new DictionaryEntry("14", "3C创客-双屏电脑"));
+            xt_list.Add(new DictionaryEntry("15", "创新学习-MAC电脑"));
+            xt_list.Add(new DictionaryEntry("16", "创新学习-云桌面"));
+            xt_list.Add(new DictionaryEntry("6", "二楼西自然科学图书借阅区"));
+            xt_list.Add(new DictionaryEntry("7", "二楼东自然科学图书借阅区"));
+            xt_list.Add(new DictionaryEntry("8", "三楼西社会科学图书借阅区"));
+            xt_list.Add(new DictionaryEntry("10", "三楼东社会科学图书借阅区"));
+            xt_list.Add(new DictionaryEntry("12", "三楼自主学习区"));
+            xt_list.Add(new DictionaryEntry("9", "四楼西图书阅览区"));
+            xt_list.Add(new DictionaryEntry("11", "四楼东图书阅览区"));
+            comboBox4.DataSource = xt_list;
+            comboBox4.DisplayMember = "Value";
+            comboBox4.ValueMember = "Key";
+            comboBox4.SelectedIndex = 8;
+
 
             ArrayList date = new ArrayList();
             //字典形式对应
@@ -48,10 +63,46 @@ namespace RushSeat
             comboBox1.DisplayMember = "Value";
             comboBox1.ValueMember = "Key";
             comboBox1.SelectedIndex = 1;
+
+            startTime.Add(new DictionaryEntry("480", "8:00"));
+            startTime.Add(new DictionaryEntry("510", "8:30"));
+            startTime.Add(new DictionaryEntry("540", "9:00"));
+            startTime.Add(new DictionaryEntry("570", "9:30"));
+            startTime.Add(new DictionaryEntry("600", "10:00"));
+            startTime.Add(new DictionaryEntry("630", "10:30"));
+            startTime.Add(new DictionaryEntry("660", "11:00"));
+            startTime.Add(new DictionaryEntry("690", "11:30"));
+            startTime.Add(new DictionaryEntry("720", "12:00"));
+            startTime.Add(new DictionaryEntry("750", "12:30"));
+            startTime.Add(new DictionaryEntry("780", "13:00"));
+            startTime.Add(new DictionaryEntry("810", "13:30"));
+            startTime.Add(new DictionaryEntry("840", "14:00"));
+            startTime.Add(new DictionaryEntry("870", "14:30"));
+            startTime.Add(new DictionaryEntry("900", "15:00"));
+            startTime.Add(new DictionaryEntry("930", "15:30"));
+            startTime.Add(new DictionaryEntry("960", "16:00"));
+            startTime.Add(new DictionaryEntry("990", "16:30"));
+            startTime.Add(new DictionaryEntry("1020", "17:00"));
+            startTime.Add(new DictionaryEntry("1050", "17:30"));
+            startTime.Add(new DictionaryEntry("1080", "18:00"));
+            startTime.Add(new DictionaryEntry("1110", "18:30"));
+            startTime.Add(new DictionaryEntry("1140", "19:00"));
+            startTime.Add(new DictionaryEntry("1170", "19:30"));
+            startTime.Add(new DictionaryEntry("1200", "20:00"));
+            startTime.Add(new DictionaryEntry("1230", "20:30"));
+            startTime.Add(new DictionaryEntry("1260", "21:00"));
+            startTime.Add(new DictionaryEntry("1290", "21:30"));
+            comboBox2.DataSource = startTime;
+            comboBox2.DisplayMember = "Value";
+            comboBox2.ValueMember = "Key";
+            comboBox2.SelectedIndex = 4;  //默认10点开始
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Run.roomID = comboBox4.SelectedValue.ToString();
+            Run.startTime = comboBox2.SelectedValue.ToString();
+            Run.endTime = comboBox3.SelectedValue.ToString();
             //在22:15之前预约明天的
             if (Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:15:00")) < 0)  
             {
@@ -128,6 +179,27 @@ namespace RushSeat
         private void Config_FormClosed(object sender, FormClosedEventArgs e)
         {
             System.Environment.Exit(0);
+        }
+
+        private void comboBox2_StyleChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void comboBox2_SelectedValueChanged(object sender, EventArgs e)
+        {
+            ArrayList endTime = new ArrayList();
+            int i;
+            for (i = comboBox2.SelectedIndex + 1; i <= 27; i++)
+            {
+                endTime.Add(startTime[i]);
+            }
+            endTime.Add(new DictionaryEntry("1320", "22:00"));
+            comboBox3.DataSource = endTime;
+            comboBox3.DisplayMember = "Value";
+            comboBox3.ValueMember = "Key";
+            int length = endTime.Count;
+            comboBox3.SelectedIndex = length - 1;  //默认晚上10点结束
         }
     }
 }
