@@ -1,4 +1,4 @@
-# 武大图书馆抢座程序RushSeat-UI<br>
+﻿# 武大图书馆抢座程序RushSeat-UI<br>
 一般人应该也不会发现这里，参与测试的老哥们不要告诉其他人，如果用的人太多API被封了就不好了...<br>
 写的很仓促，所以代码很丑，逻辑也有混乱的地方，请诸位不要见笑<br>
 无论你发现了任何运行BUG或者是不够好的地方，或者说你有什么特殊需求希望可以实现，请一定要联系我<br>
@@ -18,9 +18,6 @@
 **后台监测某个房间的座位，有释放的自动预约(这个功能很有用，会优先实现)** <br>
 拓展检索空间（不只是检索一个房间)<br>
 用户体验优化<br>
-- - -
-## 房间号对应图：<br>
-![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/0.png)
 - - -
 ## 运行截图：<br>
 ![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/2.png)
