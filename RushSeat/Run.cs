@@ -59,8 +59,6 @@ namespace RushSeat
                      string resInfo = RushSeat.CheckHistoryInf(false);
                      if (resInfo == "RESERVE")
                      {
-                         //Config.config.textBox1.AppendText("正在释放当前座位...\n");
-
                          if(RushSeat.CancelReservation(RushSeat.resID) != true)
                          {
                              Config.config.textBox1.AppendText("请手动重试...");
