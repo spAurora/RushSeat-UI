@@ -118,7 +118,7 @@ namespace RushSeat
                 {
                     button1.Text = "结束等待";
                     Run.date = comboBox1.SelectedValue.ToString();
-                    RushSeat.Wait("22", "15", "10");
+                    RushSeat.Wait("22", "15", "5");
                     //如果是用户停止等待
                     if (RushSeat.stop_waiting)
                     {
