@@ -28,16 +28,19 @@ namespace RushSeat
             string response = RushSeat.GetToken(true);
             if (response == "Success")
             {
-                //是否已预约检查
-                if (RushSeat.CheckHistoryInf() == true)
-                {
                     Hide();
-
                     Config config = new Config();
                     config.Show();
                     config.textBox1.AppendText("登录成功!\n");
+                    if (RushSeat.CheckHistoryInf() == "NO")
+                    {
+                        config.textBox1.AppendText("当前无有效预约\n");
+                    }
+                    else  //已经有有效预约
+                    {
+                        
+                    }
                     RushSeat.GetUserInfo();
-                }
             }
         }
 

@@ -29,6 +29,12 @@ namespace RushSeat
         private void Config_Load(object sender, EventArgs e)
         {
 
+            Config.config.textBox1.AppendText("软件作者本意只是为了方便学习，无意对预约系统造成任何不良影响\n");
+            Config.config.textBox1.AppendText("请用户不要尝试其它对预约系统的破坏行为\n");
+            Config.config.textBox1.AppendText("程序代码已经开源，详情见https://github.com/spAurora/RushSeat-UI.git\n");
+            Config.config.textBox1.AppendText("---------------------------------------\n");
+
+
             if (config.checkBox1.Checked)
                 Run.only_window = "true";
             if (config.checkBox2.Checked)
@@ -96,6 +102,8 @@ namespace RushSeat
             comboBox2.DisplayMember = "Value";
             comboBox2.ValueMember = "Key";
             comboBox2.SelectedIndex = 4;  //默认10点开始
+
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -113,12 +121,8 @@ namespace RushSeat
                 string response = RushSeat.GetToken(true);
                 if (response == "Success")
                 {
-                    //是否已预约检查
-                    if (RushSeat.CheckHistoryInf() == true)
-                    {
                         textBox1.AppendText("再次登录成功!\n");
                         Run.Start();
-                    }
                 }
                 else
                 {
@@ -200,6 +204,22 @@ namespace RushSeat
             comboBox3.ValueMember = "Key";
             int length = endTime.Count;
             comboBox3.SelectedIndex = length - 1;  //默认晚上10点结束
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (button2.Text == "取消预约")
+            {
+                if(RushSeat.CancelReservation(RushSeat.resID))
+                    button2.Enabled = false;
+            }
+            if (button2.Text == "结束使用")
+            {
+                if(RushSeat.StopUsing())
+                    button2.Enabled = false;
+            }
+            if (button2.Text != "取消预约" && button2.Text != "结束使用")
+                config.textBox1.AppendText("程序出现逻辑BUG，请联系开发者");
         }
     }
 }

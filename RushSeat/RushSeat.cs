@@ -28,11 +28,13 @@ namespace RushSeat
         private static string history_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/history/1/10";  //预约记录 最后一位数为记录数目，自习助手默认为10  
         private static string usr_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/user";  // 用户信息API
         private static string cancel_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/cancel/";  // 取消预约API + 预约ID
+        private static string stop_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/stop";  // 座位释放API  不需要其它ID
 
 
         public static string studentID = "";
         public static string password = "";
         private static string token = "";
+        public static string resID = ""; 
 
         public static DateTime time;
 
@@ -120,7 +122,9 @@ namespace RushSeat
                 return jObject["message"].ToString();
             }
         }
-        public static bool CheckHistoryInf(bool alert = true)
+
+        //检查是否有预约或者正在使用，alert开关提示
+        public static string CheckHistoryInf(bool alert = true)
         {
             string url = history_url;
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
@@ -128,7 +132,7 @@ namespace RushSeat
             SetHeaderValues(request);
             ServicePointManager.ServerCertificateValidationCallback
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
-            request.Timeout = 20000;
+            request.Timeout = 5000;
             
             //response
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -141,13 +145,25 @@ namespace RushSeat
             if (jObject["status"].ToString() == "success")
             {
                 foreach (JToken res in jObject["data"]["reservations"])
-                    if (res["stat"].ToString() == "RESERVE")
+                    if (res["stat"].ToString() == "RESERVE" || res["stat"].ToString() == "CHECK_IN" || res["stat"].ToString() == "AWAY")
                     {
-                        MessageBox.Show("已经有有效预约，请先释放");
-                        return false;
+                        if (alert)
+                        {
+                            Config.config.textBox1.AppendText("检测到已有有效预约:\n");
+                            Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n时间: " + res["date"] + " " + res["begin"] + "~" + res["end"]);
+                            Config.config.textBox1.AppendText("若释放座位可点击释放座位，若不释放座位可以自动改签\n");
+                        }
+                        //激活释放按钮
+                        Config.config.button2.Enabled = true;
+                        if (res["stat"].ToString() == "RESERVE")
+                            Config.config.button2.Text = "取消预约";
+                        if (res["stat"].ToString() == "CHECK_IN" || res["stat"].ToString() == "AWAY")
+                            Config.config.button2.Text = "结束使用";
+                        RushSeat.resID = res["id"].ToString();
+                        return res["stat"].ToString();
                     }
             }
-            return true;
+            return "NO";
         }
 
         public static bool GetUserInfo()
@@ -159,10 +175,7 @@ namespace RushSeat
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
 
-            Config.config.textBox1.AppendText("软件作者本意只是为了方便学习，无意对预约系统造成任何不良影响\n");
-            Config.config.textBox1.AppendText("请用户不要尝试其它对预约系统的破坏行为\n");
-            Config.config.textBox1.AppendText("程序代码已经开源，详情见https://github.com/spAurora/RushSeat-UI.git\n");
-            Config.config.textBox1.AppendText("---------------------------------------\n");
+            Config.config.textBox1.AppendText("\n--------------------------\n");
             Config.config.textBox1.AppendText("正在获取你的信息:\n");
 
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -182,6 +195,79 @@ namespace RushSeat
                 return true;
             }
             return false;
+        }
+
+
+        //取消预约
+        public static bool CancelReservation(string id)
+        {
+            string url = cancel_url + id;
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+            request.Method = "GET";
+            SetHeaderValues(request);
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
+            request.Timeout = 5000;
+            Config.config.textBox1.AppendText("正在取消预约... : \n");
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                Encoding encoding = Encoding.GetEncoding("UTF-8");
+                StreamReader streamReader = new StreamReader(stream, encoding);
+                string json = streamReader.ReadToEnd();
+                JObject jObject = JObject.Parse(json);
+                if (jObject["status"].ToString() == "success")
+                {
+                    Config.config.textBox1.AppendText("取消当前预约成功\n");
+                    return true;
+                }
+                else
+                {
+                    Config.config.textBox1.AppendText("取消当前预约失败\r\n" + jObject.ToString());
+                    return false;
+                }
+            }
+            catch
+            {
+               Config.config.textBox1.AppendText("Connection lost\n");
+               return false;
+            }
+        }
+
+        //结束使用
+        public static bool StopUsing()
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(stop_url);
+            request.Method = "GET";
+            SetHeaderValues(request);
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
+            request.Timeout = 5000;
+            Config.config.textBox1.AppendText("\r\n正在结束使用当前座位...\n");
+
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                Encoding encoding = Encoding.GetEncoding("UTF-8");
+                StreamReader streamReader = new StreamReader(stream, encoding);
+                string json = streamReader.ReadToEnd();
+                JObject jObject = JObject.Parse(json);
+                if (jObject["status"].ToString() == "success")
+                {
+                    Config.config.textBox1.AppendText("结束当前使用成功\n");
+                    return true;
+                }
+                else
+                {
+                    Config.config.textBox1.AppendText("结束当前使用失败\r\n" + jObject.ToString());
+                    return false;
+                }
+            }
+            catch
+            {
+                Config.config.textBox1.AppendText("Connection lost\n");
+                return false;
+            }
         }
         public static string SearchFreeSeat(string buildingId, string roomId, string date, string startTime, string endTime)
         {

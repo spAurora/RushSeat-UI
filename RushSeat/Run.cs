@@ -47,6 +47,9 @@ namespace RushSeat
             //成功抢座后自动关机
             if(success)
             {
+                //静默检查预约信息，激活释放按钮
+                RushSeat.CheckHistoryInf(false);
+
                 if (Config.config.checkBox3.Checked)
                 {
                     Config.config.textBox1.AppendText("2min后自动关机");
@@ -58,6 +61,10 @@ namespace RushSeat
                     //Config.config.textBox1.AppendText("订座成功");
                 }
 
+            }
+            else
+            {
+                //有空座但是抢座失败(别人手快)
             }
          }
     }
