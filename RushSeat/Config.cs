@@ -108,43 +108,68 @@ namespace RushSeat
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Run.roomID = comboBox4.SelectedValue.ToString();
-            Run.startTime = comboBox2.SelectedValue.ToString();
-            Run.endTime = comboBox3.SelectedValue.ToString();
-            //在22:15之前预约明天的
-            if (Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:15:00")) < 0)  
+            if (button1.Text == "开始抢座")
             {
-                Run.date = comboBox1.SelectedValue.ToString();
-                RushSeat.Wait("22", "15", "10");
-
-                //重新登录
-                string response = RushSeat.GetToken(true);
-                if (response == "Success")
+                Run.roomID = comboBox4.SelectedValue.ToString();
+                Run.startTime = comboBox2.SelectedValue.ToString();
+                Run.endTime = comboBox3.SelectedValue.ToString();
+                //在22:15之前预约明天的
+                if (Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:15:00")) < 0)
                 {
+                    button1.Text = "结束等待";
+                    Run.date = comboBox1.SelectedValue.ToString();
+                    RushSeat.Wait("22", "15", "10");
+                    //如果是用户停止等待
+                    if (RushSeat.stop_waiting)
+                    {
+                        RushSeat.stop_waiting = false;
+                        return;
+                    }
+                    //正常等待结束,重新登录
+                    string response = RushSeat.GetToken(true);
+                    if (response == "Success")
+                    {
                         textBox1.AppendText("再次登录成功!\n");
                         Run.Start();
+                    }
+                    else
+                    {
+                        textBox1.AppendText(response);
+                    }
                 }
-                else
+                
+                //在22:00之前预约今天的
+                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:00:00")) < 0 && Config.config.comboBox1.SelectedIndex == 0)
                 {
-                    textBox1.AppendText(response);
-                }      
+                    button1.Text = "结束抢座";
+                    Run.date = comboBox1.SelectedValue.ToString();
+                    Run.Start();
+                }
+                //在22：15之后预约明天的
+                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:15:00")) > 0 && Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 23:45:00")) < 0)
+                {
+                    button1.Text = "结束抢座";
+                    Run.date = comboBox1.SelectedValue.ToString();
+                    Run.Start();
+                }
+                //在23:45后预约明天的
+                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 23:45:00")) > 0)
+                {
+                    textBox1.AppendText("预约时间已过");
+                }
+                return;
             }
-            //在22:00之前预约今天的
-            else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:00:00")) < 0 && Config.config.comboBox1.SelectedIndex == 0) 
+            if (button1.Text == "结束等待")
             {
-                Run.date = comboBox1.SelectedValue.ToString();
-                Run.Start();
+                RushSeat.stop_waiting = true;
+                button1.Text = "开始抢座";
+                return;
             }
-            //在22：15之后预约明天的
-            else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:15:00")) > 0 && Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 23:45:00")) < 0)
+            if (button1.Text == "结束抢座")
             {
-                Run.date = comboBox1.SelectedValue.ToString();
-                Run.Start();
-            }
-            //在23:45后预约明天的
-            else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 23:45:00")) > 0)
-            {
-                textBox1.AppendText("预约时间已过");
+                RushSeat.stop_rush = true;
+                button1.Text = "开始抢座";
+                return;
             }
         }
 
@@ -177,7 +202,10 @@ namespace RushSeat
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-           textBox1.AppendText("等待完成...");
+            if (RushSeat.stop_waiting == true)
+                textBox1.AppendText("等待完成...");
+            else
+                textBox1.AppendText("用户中止等待...");
         }
 
         private void Config_FormClosed(object sender, FormClosedEventArgs e)

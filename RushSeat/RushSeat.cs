@@ -34,7 +34,12 @@ namespace RushSeat
         public static string studentID = "";
         public static string password = "";
         private static string token = "";
-        public static string resID = ""; 
+        public static string resID = "";
+
+        public static string now_state = "free"; // free空闲 wait等待 supervise监测抢座
+
+        public static bool stop_waiting = false;
+        public static bool stop_rush = false;
 
         public static DateTime time;
 
@@ -76,7 +81,7 @@ namespace RushSeat
             while(true)
             {               
                 delta2 = RushSeat.time.Subtract(DateTime.Now);
-                if (delta2.TotalSeconds < 0)
+                if (delta2.TotalSeconds < 0 || stop_waiting == true)
                 {
                     Config.config.backgroundWorker1.CancelAsync();
                     break;
@@ -133,37 +138,47 @@ namespace RushSeat
             ServicePointManager.ServerCertificateValidationCallback
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
-            
-            //response
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream stream = response.GetResponseStream();
-            Encoding encoding = Encoding.GetEncoding("UTF-8");
-            StreamReader streamReader = new StreamReader(stream, encoding);
-            string json = streamReader.ReadToEnd();
-            JObject jObject = JObject.Parse(json);
 
-            if (jObject["status"].ToString() == "success")
+            try
             {
-                foreach (JToken res in jObject["data"]["reservations"])
-                    if (res["stat"].ToString() == "RESERVE" || res["stat"].ToString() == "CHECK_IN" || res["stat"].ToString() == "AWAY")
-                    {
-                        if (alert)
+                //response
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                Encoding encoding = Encoding.GetEncoding("UTF-8");
+                StreamReader streamReader = new StreamReader(stream, encoding);
+                string json = streamReader.ReadToEnd();
+                JObject jObject = JObject.Parse(json);
+
+                if (jObject["status"].ToString() == "success")
+                {
+                    foreach (JToken res in jObject["data"]["reservations"])
+                        if (res["stat"].ToString() == "RESERVE" || res["stat"].ToString() == "CHECK_IN" || res["stat"].ToString() == "AWAY")
                         {
-                            Config.config.textBox1.AppendText("检测到已有有效预约:\n");
-                            Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n时间: " + res["date"] + " " + res["begin"] + "~" + res["end"]);
-                            Config.config.textBox1.AppendText("若释放座位可点击释放座位，若不释放座位可以自动改签\n");
+                            if (alert)
+                            {
+                                Config.config.textBox1.AppendText("检测到已有有效预约:\n");
+                                Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n时间: " + res["date"] + " " + res["begin"] + "~" + res["end"]);
+                                Config.config.textBox1.AppendText("若释放座位可点击释放座位，若不释放座位可以自动改签\n");
+                            }
+                            //激活释放按钮
+                            Config.config.button2.Enabled = true;
+                            if (res["stat"].ToString() == "RESERVE")
+                                Config.config.button2.Text = "取消预约";
+                            if (res["stat"].ToString() == "CHECK_IN" || res["stat"].ToString() == "AWAY")
+                                Config.config.button2.Text = "结束使用";
+                            //存一下预约ID，释放时用
+                            RushSeat.resID = res["id"].ToString();
+                            return res["stat"].ToString();
                         }
-                        //激活释放按钮
-                        Config.config.button2.Enabled = true;
-                        if (res["stat"].ToString() == "RESERVE")
-                            Config.config.button2.Text = "取消预约";
-                        if (res["stat"].ToString() == "CHECK_IN" || res["stat"].ToString() == "AWAY")
-                            Config.config.button2.Text = "结束使用";
-                        RushSeat.resID = res["id"].ToString();
-                        return res["stat"].ToString();
-                    }
+                }
+                return "NO";
             }
-            return "NO";
+            catch
+            {
+                Config.config.textBox1.AppendText("Connection lost...");
+                return "WRONG";
+            }
+
         }
 
         public static bool GetUserInfo()
@@ -207,7 +222,7 @@ namespace RushSeat
             SetHeaderValues(request);
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
-            Config.config.textBox1.AppendText("正在取消预约... : \n");
+            Config.config.textBox1.AppendText("正在取消当前预约... : \n");
             try
             {
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -291,7 +306,7 @@ namespace RushSeat
                 byte[] data = Encoding.UTF8.GetBytes(buffer.ToString());
                 request.ContentLength = data.Length;
                 request.GetRequestStream().Write(data, 0, data.Length);
-                Config.config.textBox1.AppendText("正在获取空座信息...\n");
+                //Config.config.textBox1.AppendText("正在获取空座信息...\n");
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 Encoding encoding = Encoding.GetEncoding("UTF-8");
@@ -334,14 +349,14 @@ namespace RushSeat
                 }
                 else
                 {
-                    Config.config.textBox1.AppendText("No free seat!\n");
+                    Config.config.textBox1.AppendText("没有符合条件的空座了，稍后会再次检索\n");
                     return "NoFreeSeat";
                 }
             }
             catch
             {
-                Config.config.textBox1.AppendText("获取空座信息出错...\n");
-                return "Something wrong";
+                Config.config.textBox1.AppendText("获取空座信息出错...可能是连接丢失，也可能是其它问题，请重试\n");
+                return "SomethingWrong";
             }
         }
 
