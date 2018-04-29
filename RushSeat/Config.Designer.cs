@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Config));
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -50,6 +51,7 @@
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // textBox1
@@ -254,6 +256,13 @@
             this.label6.TabIndex = 122;
             this.label6.Text = "手机号码：";
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon1.Text = "RushSeat";
+            this.notifyIcon1.Visible = true;
+            this.notifyIcon1.Click += new System.EventHandler(this.notifyIcon1_Click);
+            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
@@ -282,9 +291,10 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Config";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RushSeat V3.0";
+            this.Text = "RushSeat V3.1";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Config_FormClosed);
             this.Load += new System.EventHandler(this.Config_Load);
+            this.SizeChanged += new System.EventHandler(this.Config_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -313,5 +323,6 @@
         private System.Windows.Forms.Label label6;
         public System.Windows.Forms.TextBox textBox3;
         public System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }

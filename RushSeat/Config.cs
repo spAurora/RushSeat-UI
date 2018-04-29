@@ -257,5 +257,20 @@ namespace RushSeat
             if (button2.Text != "取消预约" && button2.Text != "结束使用")
                 config.textBox1.AppendText("程序出现逻辑BUG，请联系开发者");
         }
+
+        private void Config_SizeChanged(object sender, EventArgs e)
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Hide();   //隐藏窗体
+                notifyIcon1.Visible = true; //使托盘图标可见
+            }
+        }
+
+        private void notifyIcon1_Click(object sender, EventArgs e)
+        {
+            this.Visible = true;
+            this.WindowState = FormWindowState.Normal;
+        }
     }
 }
