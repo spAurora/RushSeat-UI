@@ -406,10 +406,9 @@ namespace RushSeat
                 //编辑短信内容
                 if (Config.config.checkBox4.Checked)
                 {
-                    Config.config.textBox1.AppendText("正在编辑短信内容...\n");
-                    strContent += "订座成功\n";
-                    strContent += "时间：" + jObject["data"]["onDate"].ToString() + ", " + jObject["data"]["begin"].ToString() + "~" + jObject["data"]["end"].ToString() + "\n";
-                    strContent += "地点：" + jObject["data"]["location"].ToString() + "\n" + "【RushSeatV3.0】";
+                    Config.config.textBox1.AppendText("正在编辑短信内容...\n"); 
+                    strContent += jObject["data"]["onDate"].ToString().Replace(" ", "") + jObject["data"]["begin"].ToString() + "~" + jObject["data"]["end"].ToString() + " ";
+                    strContent += jObject["data"]["location"].ToString() + "【RSV3.1】";
                     strMob += Config.config.textBox3.Text.ToString();
                 }
 

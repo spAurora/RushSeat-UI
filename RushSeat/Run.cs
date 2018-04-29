@@ -96,7 +96,11 @@ namespace RushSeat
                          RushSeat.CheckHistoryInf(false);
                          //发短信
                          if (Config.config.checkBox4.Checked)
-                             Config.config.textBox1.AppendText("短信已发送，返回值：\n" + RushSeat.SendMessage() + "\n若返回值小于0为发送失败，请联系开发者\n");
+                         {
+                             Config.config.textBox1.AppendText("短信已发送，返回值：\n" + RushSeat.SendMessage() + "\n");
+                             Config.config.textBox1.AppendText("若返回值小于0为发送失败，请联系开发者\n");
+                             Config.config.textBox1.AppendText("------------------------------------------\n");
+                         } 
 
                          if (Config.config.checkBox3.Checked)
                          {
