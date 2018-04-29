@@ -32,7 +32,8 @@ namespace RushSeat
                     Config config = new Config();
                     config.Show();
                     config.textBox1.AppendText("登录成功!\n");
-                    if (RushSeat.CheckHistoryInf() == "NO")
+                    RushSeat.GetUserInfo();
+                    if (RushSeat.CheckHistoryInf(true) == "NO")
                     {
                         config.textBox1.AppendText("当前无有效预约\n");
                     }
@@ -40,7 +41,7 @@ namespace RushSeat
                     {
                         
                     }
-                    RushSeat.GetUserInfo();
+                    
             }
         }
 

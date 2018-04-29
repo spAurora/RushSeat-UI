@@ -16,8 +16,8 @@ namespace RushSeat
         public static string buildingID = "1";
         public static string roomID = "4";  //6是三楼西，4是一楼某个区域
         public static string date = "2018-04-23";  //yyyy-mm-dd
-        public static string only_window = "false";
-        public static string only_conputer = "false";
+        public static bool only_window = false;
+        public static bool only_computer = false;
 
         private static Thread thread;
 
@@ -35,6 +35,7 @@ namespace RushSeat
          {
              Config.config.button2.Enabled = false;
              int count = 0;
+             int wrong_count = 0;
              bool get_list = false;
              while (true)
              {
@@ -46,11 +47,14 @@ namespace RushSeat
                      return;
                  }
                  Config.config.textBox1.AppendText("即将开始第 " + (++count).ToString() + " 次检索...\n");
+                 //移除之前的空座列表
+                 RushSeat.freeSeats.Clear();
                  if (RushSeat.SearchFreeSeat(buildingID, roomID, date, startTime, endTime) == "Success")
                  {
                      Config.config.textBox1.AppendText("检索到符合条件空座列表，开始尝试预约...\n");
                      get_list = true;
                  }
+
 
                  //如果检索到空座
                  if (get_list == true)
@@ -79,10 +83,11 @@ namespace RushSeat
                          if (RushSeat.BookSeat(seatID, date, startTime, endTime) == "Success")
                          {
                              success = true;
+                             Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约成功\n");
                              break;
                          }
                          Thread.Sleep(500);
-                         Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位");
+                         Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位\n");
                      }
                      //成功抢座后自动关机
                      if (success == true)
@@ -100,17 +105,25 @@ namespace RushSeat
                          {
                              //Config.config.textBox1.AppendText("订座成功");
                          }
+
                          Config.config.button1.Text = "开始抢座";
                          break;
                      }
                      else
                      {
                          //有空座但是抢座失败(别人手快)
+                         wrong_count++;
                          Config.config.textBox1.AppendText("*****预约失败，即将重新开始检索...*****\n");
                          get_list = false;
+                         if(wrong_count == 4)
+                         {
+                             Config.config.textBox1.AppendText("多次抢座失败，为防止封号中止抢座\n");
+                             Config.config.textBox1.AppendText("请联系开发者\n");
+                             return;
+                         }
                      }
                  }
-                 Thread.Sleep(1000);
+                 Thread.Sleep(3000);
              }
          }
     }

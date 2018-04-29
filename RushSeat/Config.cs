@@ -35,19 +35,16 @@ namespace RushSeat
             Config.config.textBox1.AppendText("---------------------------------------\n");
 
 
-            if (config.checkBox1.Checked)
-                Run.only_window = "true";
-            if (config.checkBox2.Checked)
-                Run.only_window = "true";
+            
             //Run.date = comboBox1.SelectedValue.ToString();
 
             ArrayList xt_list = new ArrayList();
             xt_list.Add(new DictionaryEntry("1", "只包含2~4楼和1楼云桌面"));
             xt_list.Add(new DictionaryEntry("5", "一楼创新学习讨论区"));
             xt_list.Add(new DictionaryEntry("4", "一楼3C创客空间"));
-            xt_list.Add(new DictionaryEntry("14", "3C创客-双屏电脑"));
-            xt_list.Add(new DictionaryEntry("15", "创新学习-MAC电脑"));
-            xt_list.Add(new DictionaryEntry("16", "创新学习-云桌面"));
+            xt_list.Add(new DictionaryEntry("14", "3C创客-双屏电脑(20台)"));
+            xt_list.Add(new DictionaryEntry("15", "创新学习-MAC电脑（12台）"));
+            xt_list.Add(new DictionaryEntry("16", "创新学习-云桌面（42台）"));
             xt_list.Add(new DictionaryEntry("6", "二楼西自然科学图书借阅区"));
             xt_list.Add(new DictionaryEntry("7", "二楼东自然科学图书借阅区"));
             xt_list.Add(new DictionaryEntry("8", "三楼西社会科学图书借阅区"));
@@ -108,6 +105,15 @@ namespace RushSeat
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (config.checkBox1.Checked)
+                Run.only_window = true;
+            else
+                Run.only_window = false;
+            if (config.checkBox2.Checked)
+                Run.only_computer = true;
+            else
+                Run.only_computer = false;
+
             if (button1.Text == "开始抢座")
             {
                 Run.roomID = comboBox4.SelectedValue.ToString();
@@ -161,12 +167,14 @@ namespace RushSeat
             }
             if (button1.Text == "结束等待")
             {
+                RushSeat.CheckHistoryInf(false);
                 RushSeat.stop_waiting = true;
                 button1.Text = "开始抢座";
                 return;
             }
             if (button1.Text == "结束抢座")
             {
+                RushSeat.CheckHistoryInf(false);
                 RushSeat.stop_rush = true;
                 button1.Text = "开始抢座";
                 return;

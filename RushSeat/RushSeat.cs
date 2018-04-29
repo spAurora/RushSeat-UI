@@ -157,8 +157,9 @@ namespace RushSeat
                             if (alert)
                             {
                                 Config.config.textBox1.AppendText("检测到已有有效预约:\n");
-                                Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n时间: " + res["date"] + " " + res["begin"] + "~" + res["end"]);
+                                Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n时间: " + res["date"] + " " + res["begin"] + "~" + res["end"] + "\n");
                                 Config.config.textBox1.AppendText("若释放座位可点击释放座位，若不释放座位可以自动改签\n");
+                                Config.config.textBox1.AppendText("---------------------------------------\n");
                             }
                             //激活释放按钮
                             Config.config.button2.Enabled = true;
@@ -325,23 +326,23 @@ namespace RushSeat
 
                     foreach (var num in seats)
                     {
-                        if (Run.only_window == "false")
+                        if (Run.only_window == false)
                         {
-                            if (Run.only_conputer == "false")
+                            if (Run.only_computer == false)
                                 freeSeats.Add(num.First["id"].ToString());
                             else
-                                if (num.First["computer"].ToString() != "False")
+                                if (num.First["computer"].ToString() == "True")
                                     freeSeats.Add(num.First["id"].ToString());
                         }
-                        if (Run.only_window != "false")
+                        if (Run.only_window == true)
                         {
-                            if (Run.only_conputer == "false")
+                            if (Run.only_computer == false)
                             {
-                                if (num.First["window"].ToString() != "False")
+                                if (num.First["window"].ToString() == "True")  //JSON转换bool首字母大写
                                     freeSeats.Add(num.First["id"].ToString());
                             }
                             else
-                                if (num.First["window"].ToString() != "False" && num.First["computer"].ToString() != "False")
+                                if (num.First["window"].ToString() == "True" && num.First["computer"].ToString() != "True")
                                     freeSeats.Add(num.First["id"].ToString());
                         }
                     }
