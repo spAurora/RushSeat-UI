@@ -22,4 +22,3 @@
 ## 运行截图：<br>
 ![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/2.png)
 ![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/3.png)
-![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/1.png)
