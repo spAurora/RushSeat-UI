@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace RushSeat
 {
@@ -83,7 +84,6 @@ namespace RushSeat
                          if (RushSeat.BookSeat(seatID, date, startTime, endTime) == "Success")
                          {
                              success = true;
-                             //Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约成功\n");
                              break;
                          }
                          Thread.Sleep(500);
@@ -94,6 +94,12 @@ namespace RushSeat
                      {
                          //静默检查预约信息，激活释放按钮
                          RushSeat.CheckHistoryInf(false);
+
+                         //窗口弹出
+                         if (Config.config.Visible != true)
+                            Config.config.Visible = true;
+                         Config.config.WindowState = FormWindowState.Normal;
+
                          //发短信
                          if (Config.config.checkBox4.Checked)
                          {
