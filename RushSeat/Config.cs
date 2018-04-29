@@ -34,7 +34,7 @@ namespace RushSeat
             Config.config.textBox1.AppendText("程序代码已经开源，详情见https://github.com/spAurora/RushSeat-UI.git\n");
             Config.config.textBox1.AppendText("---------------------------------------\n");
 
-
+            
             
             //Run.date = comboBox1.SelectedValue.ToString();
 

@@ -41,7 +41,8 @@ namespace RushSeat
                     {
                         
                     }
-                    
+                    Config.config.textBox1.AppendText("剩余可发送短信数目：" + RushSeat.GetSMSNum() + "\n");
+                    Config.config.textBox1.AppendText("---------------------\n");
             }
         }
 

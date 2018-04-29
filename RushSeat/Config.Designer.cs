@@ -47,24 +47,27 @@
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // textBox1
             // 
             this.textBox1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.textBox1.Location = new System.Drawing.Point(86, 286);
+            this.textBox1.Location = new System.Drawing.Point(452, 33);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(830, 197);
+            this.textBox1.Size = new System.Drawing.Size(479, 548);
             this.textBox1.TabIndex = 100;
             this.textBox1.TabStop = false;
             // 
             // textBox2
             // 
             this.textBox2.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.textBox2.Location = new System.Drawing.Point(86, 250);
+            this.textBox2.Location = new System.Drawing.Point(465, 6);
             this.textBox2.Name = "textBox2";
             this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(303, 21);
@@ -73,9 +76,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(580, 22);
+            this.button1.Location = new System.Drawing.Point(86, 242);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(335, 79);
+            this.button1.Size = new System.Drawing.Size(340, 79);
             this.button1.TabIndex = 102;
             this.button1.Text = "开始抢座";
             this.button1.UseVisualStyleBackColor = true;
@@ -84,7 +87,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(580, 206);
+            this.checkBox1.Location = new System.Drawing.Point(86, 429);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(142, 22);
             this.checkBox1.TabIndex = 103;
@@ -94,7 +97,7 @@
             // checkBox2
             // 
             this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(740, 206);
+            this.checkBox2.Location = new System.Drawing.Point(266, 429);
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(160, 22);
             this.checkBox2.TabIndex = 104;
@@ -176,8 +179,8 @@
             // checkBox3
             // 
             this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(580, 249);
-            this.checkBox3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBox3.Location = new System.Drawing.Point(86, 469);
+            this.checkBox3.Margin = new System.Windows.Forms.Padding(2);
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(241, 22);
             this.checkBox3.TabIndex = 115;
@@ -216,20 +219,49 @@
             // button2
             // 
             this.button2.Enabled = false;
-            this.button2.Location = new System.Drawing.Point(580, 119);
-            this.button2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button2.Location = new System.Drawing.Point(86, 335);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(335, 64);
+            this.button2.Size = new System.Drawing.Size(340, 80);
             this.button2.TabIndex = 119;
             this.button2.Text = "释放当前座位";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(86, 512);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(232, 22);
+            this.checkBox4.TabIndex = 120;
+            this.checkBox4.Text = "抢座成功后发送提示短信";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(187, 547);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(254, 28);
+            this.textBox3.TabIndex = 121;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(83, 550);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(98, 18);
+            this.label6.TabIndex = 122;
+            this.label6.Text = "手机号码：";
+            // 
             // Config
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(990, 508);
+            this.ClientSize = new System.Drawing.Size(999, 600);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.checkBox4);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.comboBox4);
             this.Controls.Add(this.comboBox3);
@@ -250,7 +282,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Config";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RushSeat V2.0";
+            this.Text = "RushSeat V3.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Config_FormClosed);
             this.Load += new System.EventHandler(this.Config_Load);
             this.ResumeLayout(false);
@@ -278,5 +310,8 @@
         public System.Windows.Forms.Button button1;
         public System.Windows.Forms.CheckBox checkBox1;
         public System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label label6;
+        public System.Windows.Forms.TextBox textBox3;
+        public System.Windows.Forms.CheckBox checkBox4;
     }
 }

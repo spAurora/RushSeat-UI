@@ -7,6 +7,7 @@
 ### `部分编译器需要下载json.Net程序包，对工程点右键，找到'管理NuGet程序包'，在里面可以联机下载`<br>
 - - -
 ## 目前实现的功能：<br>
+抢座成功后发送提示短信
 **后台监测某个房间的座位，有释放的自动预约** <br>
 针对信图某一房间抢各种类型(靠窗、有电脑)座位<br>
 检索某个房间某个时间段的所有空座并预约<br>
@@ -22,3 +23,4 @@
 ## 运行截图：<br>
 ![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/2.png)
 ![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/3.png)
+![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/1.PNG)

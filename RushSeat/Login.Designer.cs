@@ -39,7 +39,7 @@
             // button1
             // 
             this.button1.Font = new System.Drawing.Font("微软雅黑", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.button1.Location = new System.Drawing.Point(88, 236);
+            this.button1.Location = new System.Drawing.Point(98, 230);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(196, 64);
             this.button1.TabIndex = 1;
@@ -102,7 +102,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RushSeat V2.0";
+            this.Text = "RushSeat V3.0";
             this.Load += new System.EventHandler(this.Login_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -29,6 +29,13 @@ namespace RushSeat
         private static string usr_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/user";  // 用户信息API
         private static string cancel_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/cancel/";  // 取消预约API + 预约ID
         private static string stop_url = "https://seat.lib.whu.edu.cn:8443/rest/v2/stop";  // 座位释放API  不需要其它ID
+        private static string snum_url = "http://www.smschinese.cn/web_api/SMS/?Action=SMS_Num&Uid=银翼随风&Key=d41d8cd98f00b204e980";
+
+        private static string msg_url = "http://utf8.sms.webchinese.cn/?";//发送短信平台网址SMS  
+        private static string strUid = "Uid=银翼随风";//注册的SMS平台的账号ID  
+        private static string strKey = "&key=d41d8cd98f00b204e980";//注册的SMS平台的接口密匙  
+        private static string strMob = "&smsMob=";//手机号码  
+        private static string strContent = "&smsText=";// 发送的内容 
 
 
         public static string studentID = "";
@@ -395,6 +402,17 @@ namespace RushSeat
                 Config.config.textBox1.AppendText("订座成功\n");
                 Config.config.textBox1.AppendText("时间：" + jObject["data"]["onDate"].ToString() + ", " + jObject["data"]["begin"].ToString() + "~" + jObject["data"]["end"].ToString() + "\n");
                 Config.config.textBox1.AppendText("地点：" + jObject["data"]["location"].ToString() + "\n");
+
+                //编辑短信内容
+                if (Config.config.checkBox4.Checked)
+                {
+                    Config.config.textBox1.AppendText("正在编辑短信内容...\n");
+                    strContent += "订座成功\n";
+                    strContent += "时间：" + jObject["data"]["onDate"].ToString() + ", " + jObject["data"]["begin"].ToString() + "~" + jObject["data"]["end"].ToString() + "\n";
+                    strContent += "地点：" + jObject["data"]["location"].ToString() + "\n" + "【RushSeatV3.0】";
+                    strMob += Config.config.textBox3.Text.ToString();
+                }
+
                 return "Success";
             }
             else
@@ -404,7 +422,59 @@ namespace RushSeat
             }            
         }
 
+        public static string GetSMSNum()
+        {
+            string url = snum_url;
+            string strRet = null;
+            if (url == null || url.Trim().ToString() == "")
+            {
+                return strRet;
+            }
+            string targeturl = url.Trim().ToString();
+            try
+            {
+                HttpWebRequest hr = (HttpWebRequest)WebRequest.Create(targeturl);
+                hr.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+                hr.Method = "GET";
+                hr.Timeout = 30 * 60 * 1000;
+                WebResponse hs = hr.GetResponse();
+                Stream sr = hs.GetResponseStream();
+                StreamReader ser = new StreamReader(sr, Encoding.Default);
+                strRet = ser.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                strRet = null;
+            }
+            return strRet;
+        }
 
+        public static string SendMessage()
+        {
+            msg_url = msg_url + strUid  + strKey + strMob + strContent;
+            string strRet = null;
+            if (msg_url == null || msg_url.Trim().ToString() == "")
+            {
+                return strRet;
+            }
+            string targeturl = msg_url.Trim().ToString();
+            try
+            {
+                HttpWebRequest hr = (HttpWebRequest)WebRequest.Create(targeturl);
+                hr.UserAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)";
+                hr.Method = "GET";
+                hr.Timeout = 30 * 60 * 1000;
+                WebResponse hs = hr.GetResponse();
+                Stream sr = hs.GetResponseStream();
+                StreamReader ser = new StreamReader(sr, Encoding.Default);
+                strRet = ser.ReadToEnd();
+            }
+            catch (Exception ex)
+            {
+                strRet = null;
+            }
+            return strRet;
+        }
         
     }
 }

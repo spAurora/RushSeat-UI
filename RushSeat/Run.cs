@@ -83,7 +83,7 @@ namespace RushSeat
                          if (RushSeat.BookSeat(seatID, date, startTime, endTime) == "Success")
                          {
                              success = true;
-                             Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约成功\n");
+                             //Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约成功\n");
                              break;
                          }
                          Thread.Sleep(500);
@@ -94,6 +94,9 @@ namespace RushSeat
                      {
                          //静默检查预约信息，激活释放按钮
                          RushSeat.CheckHistoryInf(false);
+                         //发短信
+                         if (Config.config.checkBox4.Checked)
+                             Config.config.textBox1.AppendText("短信已发送，返回值：\n" + RushSeat.SendMessage() + "\n若返回值小于0为发送失败，请联系开发者\n");
 
                          if (Config.config.checkBox3.Checked)
                          {
