@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace RushSeat
 {
@@ -14,6 +15,8 @@ namespace RushSeat
     {
 
         public static Login login;
+
+        public static string[] strs1;
 
         public Login()
         {
@@ -23,8 +26,17 @@ namespace RushSeat
 
         private void button1_Click(object sender, EventArgs e)
         {
-            RushSeat.studentID = textBox1.Text;
-            RushSeat.password = textBox2.Text;
+
+            RushSeat.studentID = textBox1.Text.ToString();
+            RushSeat.password = textBox2.Text.ToString();
+
+            if (checkBox1.Checked)
+            {
+                string[] strs = {textBox1.Text.ToString(), textBox2.Text.ToString()};
+                File.WriteAllLines(@"saveInfo.txt", strs);
+
+            }
+
             string response = RushSeat.GetToken(true);
             if (response == "Success")
             {
@@ -48,7 +60,16 @@ namespace RushSeat
 
         private void Login_Load(object sender, EventArgs e)
         {
-
+            if (File.Exists(@"saveInfo.txt"))
+            {
+                strs1 = File.ReadAllLines(@"saveInfo.txt");
+                textBox1.Text = strs1[0];
+                textBox2.Text = strs1[1];
+            }
+            else
+            {
+                
+            }
         }
 
         private void label1_Click(object sender, EventArgs e)

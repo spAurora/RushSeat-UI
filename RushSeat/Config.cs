@@ -35,6 +35,8 @@ namespace RushSeat
             Config.config.textBox1.AppendText("---------------------------------------\n");
 
             
+            //读取保存的手机号
+            Config.config.textBox3.Text = textBox3.Text.ToString();
             
             //Run.date = comboBox1.SelectedValue.ToString();
 
@@ -211,9 +213,9 @@ namespace RushSeat
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (RushSeat.stop_waiting == true)
-                textBox1.AppendText("等待完成...");
-            else
                 textBox1.AppendText("用户中止等待...");
+            else
+                textBox1.AppendText("等待完成...");
         }
 
         private void Config_FormClosed(object sender, FormClosedEventArgs e)

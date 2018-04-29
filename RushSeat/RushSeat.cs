@@ -410,7 +410,7 @@ namespace RushSeat
                     Config.config.textBox1.AppendText("正在编辑短信内容...\n");
                     strContent += "订座成功\n";
                     strContent += ("时间：" +  msg_time + jObject["data"]["begin"].ToString().Replace(" ", "") + "~" + jObject["data"]["end"].ToString().Replace(" ", "") + " \n");
-                    strContent += ("地点：" + jObject["data"]["location"].ToString()).Replace("信息科学分馆", "") + "【RSV3.1】";
+                    strContent += ("地点：" + jObject["data"]["location"].ToString()).Replace("信息科学分馆", "") + "【RSV3.2】";
                     strMob += Config.config.textBox3.Text.ToString();
                 }
 
