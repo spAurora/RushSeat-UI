@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Collections;
 using System.Threading;
+using System.IO;
 
 namespace RushSeat
 {
@@ -28,15 +29,18 @@ namespace RushSeat
 
         private void Config_Load(object sender, EventArgs e)
         {
+            if (File.Exists(@"telnumber.txt"))
+            {
+                string [] strs2 = File.ReadAllLines(@"telnumber.txt");
+                textBox3.Text = strs2[0];
+            }
+
 
             Config.config.textBox1.AppendText("软件作者本意只是为了方便学习，无意对预约系统造成任何不良影响\n");
             Config.config.textBox1.AppendText("请用户不要尝试其它对预约系统的破坏行为\n");
             Config.config.textBox1.AppendText("程序代码已经开源，详情见https://github.com/spAurora/RushSeat-UI.git\n");
             Config.config.textBox1.AppendText("---------------------------------------\n");
 
-            
-            //读取保存的手机号
-            Config.config.textBox3.Text = textBox3.Text.ToString();
             
             //Run.date = comboBox1.SelectedValue.ToString();
 
@@ -107,6 +111,12 @@ namespace RushSeat
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (checkBox4.Checked)
+            {
+                    string[] strs = { textBox3.Text.ToString()};
+                    File.WriteAllLines(@"telnumber.txt", strs);
+            }
+
             if (config.checkBox1.Checked)
                 Run.only_window = true;
             else
@@ -123,11 +133,11 @@ namespace RushSeat
                 Run.startTime = comboBox2.SelectedValue.ToString();
                 Run.endTime = comboBox3.SelectedValue.ToString();
                 //在22:15之前预约明天的
-                if (Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:15:00")) < 0)
+                if (Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:45:00")) < 0)
                 {
                     button1.Text = "结束等待";
                     Run.date = comboBox1.SelectedValue.ToString();
-                    RushSeat.Wait("22", "15", "5");
+                    RushSeat.Wait("22", "45", "3");
                     //如果是用户停止等待
                     if (RushSeat.stop_waiting)
                     {
@@ -146,23 +156,47 @@ namespace RushSeat
                         textBox1.AppendText(response);
                     }
                 }
-                
-                //在22:00之前预约今天的
-                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:00:00")) < 0 && Config.config.comboBox1.SelectedIndex == 0)
+                //在1点之前预约今天的
+                else if(DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 01:00:00")) < 0 && Config.config.comboBox1.SelectedIndex == 0)
+                {
+                    button1.Text = "结束等待";
+                    Run.date = comboBox1.SelectedValue.ToString();
+                    RushSeat.Wait("01", "00", "3");
+                    //如果是用户停止等待
+                    if (RushSeat.stop_waiting)
+                    {
+                        //RushSeat.stop_waiting = false;
+                        return;
+                    }
+                    //正常等待结束,重新登录
+                    string response = RushSeat.GetToken(true);
+                    if (response == "Success")
+                    {
+                        textBox1.AppendText("再次登录成功!\n");
+                        Run.Start();
+                    }
+                    else
+                    {
+                        textBox1.AppendText(response);
+                    }
+                }
+
+                //在1:00 之后 22:00之前预约今天的
+                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 01:00:00")) > 0 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:00:00")) < 0 && Config.config.comboBox1.SelectedIndex == 0)
                 {
                     button1.Text = "结束抢座";
                     Run.date = comboBox1.SelectedValue.ToString();
                     Run.Start();
                 }
-                //在22：15之后预约明天的
-                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:15:00")) > 0 && Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 23:45:00")) < 0)
+                //在22：45之后 23:50之前预约明天的
+                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:45:00")) > 0 && Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 23:50:00")) < 0)
                 {
                     button1.Text = "结束抢座";
                     Run.date = comboBox1.SelectedValue.ToString();
                     Run.Start();
                 }
-                //在23:45后预约明天的
-                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 23:45:00")) > 0)
+                //在23:50后预约明天的
+                else if (DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 23:50:00")) > 0)
                 {
                     textBox1.AppendText("预约时间已过");
                 }
@@ -274,6 +308,22 @@ namespace RushSeat
         {
             this.Visible = true;
             this.WindowState = FormWindowState.Normal;
+        }
+
+        private void comboBox4_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ArrayList seats = new ArrayList();
+            if (comboBox4.SelectedValue.GetType() == typeof(string))
+            {
+                if (int.Parse(comboBox4.SelectedValue.ToString()) > 1)
+                {
+                    RushSeat.GetSeats(comboBox4.SelectedValue.ToString(), seats);
+                }
+            }
+            seats.Insert(0, new DictionaryEntry("0", "(从0开始顺序检索)"));
+            comboBox5.DataSource = seats;
+            comboBox5.DisplayMember = "Value";
+            comboBox5.ValueMember = "Key";
         }
     }
 }
