@@ -118,6 +118,7 @@ namespace RushSeat
 
             if (button1.Text == "开始抢座")
             {
+                RushSeat.stop_waiting = false;
                 Run.roomID = comboBox4.SelectedValue.ToString();
                 Run.startTime = comboBox2.SelectedValue.ToString();
                 Run.endTime = comboBox3.SelectedValue.ToString();
@@ -130,7 +131,7 @@ namespace RushSeat
                     //如果是用户停止等待
                     if (RushSeat.stop_waiting)
                     {
-                        RushSeat.stop_waiting = false;
+                        //RushSeat.stop_waiting = false;
                         return;
                     }
                     //正常等待结束,重新登录
