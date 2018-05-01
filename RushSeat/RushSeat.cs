@@ -212,6 +212,7 @@ namespace RushSeat
             {
                 Config.config.textBox1.AppendText("姓名：" + jObject["data"]["name"].ToString() + "\n");
                 Config.config.textBox1.AppendText("学号：" + jObject["data"]["username"].ToString() + "\n");
+                Config.config.textBox1.AppendText("违约次数：" + jObject["data"]["violationCount"].ToString() +"\n");
                 Config.config.textBox1.AppendText("Lastlogin:" + jObject["data"]["lastLogin"].ToString() + "\n");
                 Config.config.textBox1.AppendText("---------------------------------------\n");
                 

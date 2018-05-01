@@ -101,6 +101,7 @@ namespace RushSeat
             startTime.Add(new DictionaryEntry("1230", "20:30"));
             startTime.Add(new DictionaryEntry("1260", "21:00"));
             startTime.Add(new DictionaryEntry("1290", "21:30"));
+            startTime.Add(new DictionaryEntry("1320", "22:00"));
             comboBox2.DataSource = startTime;
             comboBox2.DisplayMember = "Value";
             comboBox2.ValueMember = "Key";
@@ -271,12 +272,12 @@ namespace RushSeat
             {
                 endTime.Add(startTime[i]);
             }
-            endTime.Add(new DictionaryEntry("1320", "22:00"));
+            endTime.Add(new DictionaryEntry("1350", "22:30"));
             comboBox3.DataSource = endTime;
             comboBox3.DisplayMember = "Value";
             comboBox3.ValueMember = "Key";
             int length = endTime.Count;
-            comboBox3.SelectedIndex = length - 1;  //默认晚上10点结束
+            comboBox3.SelectedIndex = length - 1;  //默认晚上10:30点结束
         }
 
         private void button2_Click(object sender, EventArgs e)
