@@ -17,6 +17,7 @@ namespace RushSeat
         public static Login login;
 
         public static string[] strs1;
+        
 
         public Login()
         {
@@ -32,7 +33,7 @@ namespace RushSeat
 
             if (checkBox1.Checked)
             {
-                string[] strs = {textBox1.Text.ToString(), textBox2.Text.ToString()};
+                string[] strs = {DES.EncryptDES(textBox1.Text.ToString()), DES.EncryptDES(textBox2.Text.ToString())};
                 File.WriteAllLines(@"saveInfo.txt", strs);
 
             }
@@ -63,8 +64,8 @@ namespace RushSeat
             if (File.Exists(@"saveInfo.txt"))
             {
                 strs1 = File.ReadAllLines(@"saveInfo.txt");
-                textBox1.Text = strs1[0];
-                textBox2.Text = strs1[1];
+                textBox1.Text = DES.DecryptDES(strs1[0]);
+                textBox2.Text = DES.DecryptDES(strs1[1]);     
             }
             else
             {
