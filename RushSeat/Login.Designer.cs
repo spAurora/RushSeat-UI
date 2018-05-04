@@ -98,9 +98,9 @@
             this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox1.Location = new System.Drawing.Point(122, 291);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(282, 28);
+            this.checkBox1.Size = new System.Drawing.Size(294, 28);
             this.checkBox1.TabIndex = 6;
-            this.checkBox1.Text = "保存学号密码(未加密)";
+            this.checkBox1.Text = "保存学号密码(DES加密)";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // Login
@@ -120,7 +120,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RushSeat V3.5";
+            this.Text = "RushSeat X1.2";
             this.Load += new System.EventHandler(this.Login_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

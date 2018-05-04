@@ -17,7 +17,7 @@ namespace RushSeat
         public static Login login;
 
         public static string[] strs1;
-        
+        public static string[] strs2;
 
         public Login()
         {
@@ -61,6 +61,13 @@ namespace RushSeat
 
         private void Login_Load(object sender, EventArgs e)
         {
+            //检查程序是否过期
+            if (DateTime.Compare(DateTime.Now, Convert.ToDateTime("2018-8-1" + " 00:00:00")) > 0)
+            {
+                MessageBox.Show("试用期已过！请联系开发者");
+                System.Environment.Exit(0);
+            }
+
             if (File.Exists(@"saveInfo.txt"))
             {
                 strs1 = File.ReadAllLines(@"saveInfo.txt");
@@ -70,6 +77,16 @@ namespace RushSeat
             else
             {
                 
+            }
+
+            //读取B级列表，加入B级权限组
+            if (File.Exists(@"rankBList.txt"))
+            {
+                strs2 = File.ReadAllLines(@"rankBList.txt");
+                foreach(string i in strs2)
+                {
+                    RushSeat.rankBList.Add(DES.DecryptDES(i, ""));   
+                }
             }
         }
 

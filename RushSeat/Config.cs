@@ -20,6 +20,8 @@ namespace RushSeat
 
         public ArrayList startTime = new ArrayList();
 
+        public static char rank = 'C';
+
         public Config()
         {
             InitializeComponent();
@@ -29,16 +31,16 @@ namespace RushSeat
 
         private void Config_Load(object sender, EventArgs e)
         {
-            if (File.Exists(@"telnumber.txt"))
-            {
-                string [] strs2 = File.ReadAllLines(@"telnumber.txt");
-                textBox3.Text = strs2[0];
-            }
+           
 
 
-            Config.config.textBox1.AppendText("软件作者本意只是为了方便学习，无意对预约系统造成任何不良影响\n");
-            Config.config.textBox1.AppendText("请用户不要尝试其它对预约系统的破坏行为\n");
-            Config.config.textBox1.AppendText("程序代码已经开源，详情见https://github.com/spAurora/RushSeat-UI.git\n");
+            Config.config.textBox1.AppendText("1. 软件作者本意只是为了方便学习，无意对预约系统造成任何不良影响\n");
+            Config.config.textBox1.AppendText("2. 程序中涉及的个人信息已经过DES加密处理\n");
+            Config.config.textBox1.AppendText("3. 程序试用期至本学期结束，未来会视情况而定\n");
+            Config.config.textBox1.AppendText("4. 普通用户等级为第三级，等级会影响到可以使用的功能以及关键功能延迟(等级后面的2个数字单位为毫秒)，如想提升等级请\"收集程序BUG或者提出其它改进建议\"，并联系QQ：751984964∩ω∩\n");
+            Config.config.textBox1.AppendText("5. 程序完全免费，祝大家用的开心●ω●\n");
+
+            //Config.config.textBox1.AppendText("程序代码已经开源，详情见https://github.com/spAurora/RushSeat-UI.git\n");
             Config.config.textBox1.AppendText("---------------------------------------\n");
 
             
@@ -64,19 +66,10 @@ namespace RushSeat
             comboBox4.SelectedIndex = 8;
 
 
-            ArrayList date = new ArrayList();
-            //字典形式对应
-            date.Add(new DictionaryEntry(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd") + " (今天)"));
-            date.Add(new DictionaryEntry(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(1).ToString("yyyy-MM-dd") + " (明天)"));
-            comboBox1.DataSource = date;
-            comboBox1.DisplayMember = "Value";
-            comboBox1.ValueMember = "Key";
-            comboBox1.SelectedIndex = 1;
-
-            startTime.Add(new DictionaryEntry("480", "8:00"));
-            startTime.Add(new DictionaryEntry("510", "8:30"));
-            startTime.Add(new DictionaryEntry("540", "9:00"));
-            startTime.Add(new DictionaryEntry("570", "9:30"));
+            startTime.Add(new DictionaryEntry("480", "08:00"));
+            startTime.Add(new DictionaryEntry("510", "08:30"));
+            startTime.Add(new DictionaryEntry("540", "09:00"));
+            startTime.Add(new DictionaryEntry("570", "09:30"));
             startTime.Add(new DictionaryEntry("600", "10:00"));
             startTime.Add(new DictionaryEntry("630", "10:30"));
             startTime.Add(new DictionaryEntry("660", "11:00"));
@@ -105,7 +98,19 @@ namespace RushSeat
             comboBox2.DataSource = startTime;
             comboBox2.DisplayMember = "Value";
             comboBox2.ValueMember = "Key";
-            comboBox2.SelectedIndex = 4;  //默认10点开始
+           // comboBox2.SelectedIndex = 4;  //默认10点开始
+
+
+            ArrayList date = new ArrayList();
+            //字典形式对应
+            date.Add(new DictionaryEntry(DateTime.Now.ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd") + " (今天)"));
+            date.Add(new DictionaryEntry(DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"), DateTime.Now.AddDays(1).ToString("yyyy-MM-dd") + " (明天)"));
+            comboBox1.DataSource = date;
+            comboBox1.DisplayMember = "Value";
+            comboBox1.ValueMember = "Key";
+            comboBox1.SelectedIndex = 1;
+
+            
 
             
         }
@@ -129,16 +134,35 @@ namespace RushSeat
 
             if (button1.Text == "开始抢座")
             {
+                comboBox1.Enabled = false;
+                comboBox2.Enabled = false;
+                comboBox3.Enabled = false;
+                comboBox4.Enabled = false;
+                comboBox5.Enabled = false;
+                button1.Enabled = false;
+                backgroundWorker2.RunWorkerAsync();
                 RushSeat.stop_waiting = false;
                 Run.roomID = comboBox4.SelectedValue.ToString();
                 Run.startTime = comboBox2.SelectedValue.ToString();
                 Run.endTime = comboBox3.SelectedValue.ToString();
-                //在22:15之前预约明天的
+                //在22:45之前预约明天的
                 if (Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:45:00")) < 0)
                 {
                     button1.Text = "结束等待";
                     Run.date = comboBox1.SelectedValue.ToString();
-                    RushSeat.Wait("22", "45", "3");
+                    //防止系统拥堵，不同等级加入不同延迟
+                    Random rd = new Random();
+                    if (rank == 'C')
+                        Run.waitsecond = rd.Next(7, 10);
+                    else if (rank == 'A')
+                        Run.waitsecond = rd.Next(0, 2);
+                    else if (rank == 'B')
+                        Run.waitsecond = rd.Next(3, 5);
+                    else
+                    {
+                        Run.waitsecond = 3600;
+                    }
+                    RushSeat.Wait("22", "45", Run.waitsecond.ToString());
                     //如果是用户停止等待
                     if (RushSeat.stop_waiting)
                     {
@@ -162,7 +186,18 @@ namespace RushSeat
                 {
                     button1.Text = "结束等待";
                     Run.date = comboBox1.SelectedValue.ToString();
-                    RushSeat.Wait("01", "00", "3");
+                    Random rd = new Random();
+                    if (rank == 'C')
+                        Run.waitsecond = rd.Next(7, 10);
+                    else if (rank == 'A')
+                        Run.waitsecond = rd.Next(0, 2);
+                    else if (rank == 'B')
+                        Run.waitsecond = rd.Next(3, 5);
+                    else
+                    {
+                        Run.waitsecond = 3600;
+                    }
+                    RushSeat.Wait("01", "00", Run.waitsecond.ToString());
                     //如果是用户停止等待
                     if (RushSeat.stop_waiting)
                     {
@@ -205,6 +240,13 @@ namespace RushSeat
             }
             if (button1.Text == "结束等待")
             {
+                comboBox1.Enabled = true;
+                comboBox2.Enabled = true;
+                comboBox3.Enabled = true;
+                comboBox4.Enabled = true;
+                comboBox5.Enabled = true;
+                button1.Enabled = false;
+                backgroundWorker2.RunWorkerAsync();
                 RushSeat.CheckHistoryInf(false);
                 RushSeat.stop_waiting = true;
                 button1.Text = "开始抢座";
@@ -212,6 +254,13 @@ namespace RushSeat
             }
             if (button1.Text == "结束抢座")
             {
+                comboBox1.Enabled = true;
+                comboBox2.Enabled = true;
+                comboBox3.Enabled = true;
+                comboBox4.Enabled = true;
+                comboBox5.Enabled = true;
+                button1.Enabled = false;
+                backgroundWorker2.RunWorkerAsync();
                 RushSeat.CheckHistoryInf(false);
                 RushSeat.stop_rush = true;
                 button1.Text = "开始抢座";
@@ -249,9 +298,9 @@ namespace RushSeat
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (RushSeat.stop_waiting == true)
-                textBox1.AppendText("用户中止等待...");
+                textBox1.AppendText("用户中止等待...\n");
             else
-                textBox1.AppendText("等待完成...");
+                textBox1.AppendText("等待完成...\n");
         }
 
         private void Config_FormClosed(object sender, FormClosedEventArgs e)
@@ -325,6 +374,56 @@ namespace RushSeat
             comboBox5.DataSource = seats;
             comboBox5.DisplayMember = "Value";
             comboBox5.ValueMember = "Key";
+        }
+
+        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            DateTime now = DateTime.Now;
+            while (true)
+            {
+                delta = DateTime.Now.Subtract(now);
+                if (Convert.ToInt32(delta.ToString().Substring(7, 1)) > 1)
+                {
+                    button1.Enabled = true;
+                    return;
+                }
+                Thread.Sleep(200);
+            }
+        }
+
+        private void backgroundWorker2_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //预约今天
+            if (comboBox1.SelectedIndex == 0)
+            {
+                int index_shift = 0;
+                bool mark = false;
+                foreach (DictionaryEntry item in startTime)
+                {
+                    
+                    //如果key值和当前时间比较起来偏小，偏移值+1
+                    if (DateTime.Compare(Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + item.Value.ToString() + ":00"), DateTime.Now) < 0)
+                        index_shift++;
+                    else
+                    {
+                        mark = true;
+                        break;
+                    }
+                }
+                if (mark)
+                    comboBox2.SelectedIndex = index_shift;
+                else
+                    comboBox2.SelectedIndex = index_shift - 1;
+            }
+            else  //预约明天
+            {
+                comboBox2.SelectedIndex = 0;
+            }
+            
         }
     }
 }

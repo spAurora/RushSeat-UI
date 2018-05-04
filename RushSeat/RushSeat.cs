@@ -13,6 +13,7 @@ using System.IO;
 using Newtonsoft.Json.Linq;
 using System.Windows.Forms;
 using System.Threading;
+using System.Drawing;
 
 namespace RushSeat
 {
@@ -37,6 +38,9 @@ namespace RushSeat
         private static string strMob = "&smsMob=";//手机号码  
         private static string strContent = "&smsText=";// 发送的内容 
 
+        public static string[] rankAList = { "2015302590047", "2015302590096", "2015302590043", "2015302590145", "2015302590143", "2016302590189", "2016302590152", "2017302590158", "2015301610184", "2014302590064", "2016302590082"};
+        public static List<string> rankBList = new List<string>();
+        public static string[] rankDList = { "2015302590102"};
 
         public static string studentID = "";
         public static string password = "";
@@ -189,6 +193,7 @@ namespace RushSeat
 
         }
 
+        //获取用户信息并设置权限
         public static bool GetUserInfo()
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(usr_url);
@@ -201,22 +206,91 @@ namespace RushSeat
             Config.config.textBox1.AppendText("\n--------------------------\n");
             Config.config.textBox1.AppendText("正在获取你的信息:\n");
 
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream stream = response.GetResponseStream();
-            Encoding encoding = Encoding.GetEncoding("UTF-8");
-            StreamReader streamReader = new StreamReader(stream, encoding);
-            string json = streamReader.ReadToEnd();
-            JObject jObject = JObject.Parse(json);
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream stream = response.GetResponseStream();
+                Encoding encoding = Encoding.GetEncoding("UTF-8");
+                StreamReader streamReader = new StreamReader(stream, encoding);
+                string json = streamReader.ReadToEnd();
+                JObject jObject = JObject.Parse(json);
+           
+
+            //检查阶级
+            //根据等级设置具体参数
+            foreach (string i in RushSeat.rankAList)
+            {
+                if (jObject["data"]["username"].ToString() == i)
+                {
+                    Config.rank = 'A';
+                    Run.rankSuccessGetFreeSeat = 0;
+                    Run.repeatSearchInterval = 1800;
+                    
+                    Config.config.checkBox4.Enabled = true;
+                    Config.config.checkBox4.Checked = true;
+                    Config.config.textBox3.Enabled = true;
+                    if (File.Exists(@"telnumber.txt"))
+                    {
+                        string[] strs2 = File.ReadAllLines(@"telnumber.txt");
+                        Config.config.textBox3.Text = strs2[0];
+                    }
+                    break;
+                }
+            }
+
+            foreach (string i in RushSeat.rankBList)
+            {
+                if (jObject["data"]["username"].ToString() == i)
+                {
+                    Config.rank = 'B';
+                    Run.rankSuccessGetFreeSeat = 750;
+                    Run.repeatSearchInterval = 2400;
+                    break;
+                }
+            }
+            foreach (string i in RushSeat.rankDList)
+            {
+                if (jObject["data"]["username"].ToString() == i)
+                {
+                    Config.rank = 'D';
+                    Run.rankSuccessGetFreeSeat = 3600000;
+                    Run.repeatSearchInterval = 3600000;
+                    break;
+                }
+            }
+
+            
+
 
             if (jObject["status"].ToString() == "success")
             {
                 Config.config.textBox1.AppendText("姓名：" + jObject["data"]["name"].ToString() + "\n");
                 Config.config.textBox1.AppendText("学号：" + jObject["data"]["username"].ToString() + "\n");
+                string caste = "Wrong，请联系开发者";
+                switch (Config.rank)
+                {
+                    case 'A': { caste = "A  (0, 1800, 提示可用)"; break; }
+                    case 'B': { caste = "B  (750, 2400，提示不可用)"; break; }
+                    case 'C': { caste = "C  (1500, 3000， 提示不可用)"; break; }
+                    case 'D': { caste = "D  (3.6*10^6, 3.6*10^6)"; break; }
+                }
+                Config.config.richTextBox1.Text = "Your Rank：" + caste;
+                //阶级部分字体变红
+                Config.config.richTextBox1.Select(10, 3);
+                Config.config.richTextBox1.SelectionColor = Color.Red;
                 Config.config.textBox1.AppendText("违约次数：" + jObject["data"]["violationCount"].ToString() +"\n");
                 Config.config.textBox1.AppendText("Lastlogin:" + jObject["data"]["lastLogin"].ToString() + "\n");
                 Config.config.textBox1.AppendText("---------------------------------------\n");
                 
                 return true;
+            }
+
+            }
+            catch
+            {
+                Config.config.textBox1.AppendText("获取信息失败，估计是被关小黑屋了...第二天会解封\n");
+                Config.config.textBox1.AppendText("---------------------------------------\n");
+                return false;
             }
             return false;
         }
@@ -357,7 +431,7 @@ namespace RushSeat
                     }
                     else
                     {
-                        Config.config.textBox1.AppendText("没有符合条件的空座了，稍后会再次检索\n");
+                        Config.config.textBox1.AppendText("没有符合条件的空座了" + (((double)Run.repeatSearchInterval) / 1000).ToString() + "s后会再次检索\n");
                         return "NoFreeSeat";
                     }
                 }
@@ -437,7 +511,7 @@ namespace RushSeat
                     Config.config.textBox1.AppendText("正在编辑短信内容...\n");
                     strContent += "订座成功\n";
                     strContent += ("时间：" +  msg_time + jObject["data"]["begin"].ToString().Replace(" ", "") + "~" + jObject["data"]["end"].ToString().Replace(" ", "") + " \n");
-                    strContent += ("地点：" + jObject["data"]["location"].ToString()).Replace("信息科学分馆", "") + "【RSV3.2】";
+                    strContent += ("地点：" + jObject["data"]["location"].ToString()).Replace("信息科学分馆", "") + "【RS】";
                     strMob += Config.config.textBox3.Text.ToString();
                 }
 
