@@ -24,11 +24,11 @@ namespace RushSeat
         public static int rankSuccessGetFreeSeat = 1500;
         public static int repeatSearchInterval = 3000;
 
-        public static int preventCount = 0; 
-        
-        public static int waitsecond;
-       
+        public static int preventCount = 0;
+        public static int lastFreeSeatCount = 0;
 
+        public static int waitsecond;
+        
         private static Thread thread;
 
         private static bool success = false;
@@ -46,6 +46,7 @@ namespace RushSeat
              Config.config.button2.Enabled = false;
              int count = 0;
              int wrong_count = 0;
+             success = false;
              
              while (true)
              {
@@ -61,12 +62,72 @@ namespace RushSeat
                  Config.config.textBox1.AppendText("即将开始第 " + (++count).ToString() + " 次检索...\n");
                  //移除之前的空座列表
                  RushSeat.freeSeats.Clear();
-                 if (RushSeat.SearchFreeSeat(buildingID, roomID, date, startTime, endTime) == "Success")
+                 lastFreeSeatCount = RushSeat.freeSeats.Count;
+                 //单个房间检索
+                 if (Config.config.comboBox4.SelectedIndex != 0 && Config.config.comboBox4.SelectedIndex != 1 && Config.config.comboBox4.SelectedIndex != 2)
                  {
-                     Config.config.textBox1.AppendText("检索到符合条件空座列表，开始尝试预约...\n");
-                     get_list = true;
-                 }
+                     //获取房间空座列表
+                     string stat = "";
+                     stat = RushSeat.SearchFreeSeat(buildingID, roomID, date, startTime, endTime);
 
+                     //成功检索到空座以及没有符合条件座位但是勾选了改抢附近座位
+                     if (stat == "Success" || (stat == "NoMatchSeat" && Config.config.checkBox5.Checked == true))
+                     {
+                         Config.config.textBox1.AppendText("单一房间模式下检索到符合条件空座列表，开始尝试预约...\n");
+                         get_list = true;
+                     }
+
+                     //如果没有勾选可以改抢附近座位并且是指定座位情况下,直接跳出该循环
+                     if (stat == "NoMatchSeat" && Config.config.checkBox5.Checked != true)
+                     {
+                         Config.config.textBox1.AppendText("没有勾选改抢附近座位选项，进行下一轮抢座...\n");
+                     }
+                 }
+                 else//特殊模式,例如全馆检索
+                 {
+                     switch(Config.config.comboBox4.SelectedIndex)
+                     {
+                         case 0: {
+                             foreach (string mroomID in RushSeat.roomList_b1)
+                             {
+                                 if (RushSeat.SearchFreeSeatMulti(buildingID, mroomID, date, startTime, endTime) == "Success")
+                                 {
+                                     get_list = true;
+                                     break;
+                                 }
+                                 Thread.Sleep(repeatSearchInterval);
+                             }
+                             break;
+                         }
+                         case 1:  {
+                                 foreach (string mroomID in RushSeat.roomList_f1)
+                                 {
+                                     if (RushSeat.SearchFreeSeatMulti(buildingID, mroomID, date, startTime, endTime) == "Success")
+                                     {
+                                         get_list = true;
+                                         break;
+                                     }
+                                     Thread.Sleep(repeatSearchInterval);
+                                 }
+                                 break;
+                             }
+                         case 2:
+                             {
+                                 foreach (string mroomID in RushSeat.roomList_f2t4)
+                                 {
+                                     if (RushSeat.SearchFreeSeatMulti(buildingID, mroomID, date, startTime, endTime) == "Success")
+                                     {
+                                         get_list = true;
+                                         break;
+                                     }
+                                     Thread.Sleep(repeatSearchInterval);
+                                 }
+                                 break;
+                             }
+                     }
+                     
+                     
+                 }
 
                  //如果检索到空座
                  if (get_list == true)
@@ -82,7 +143,12 @@ namespace RushSeat
                      {
                          if(RushSeat.CancelReservation(RushSeat.resID) != true)
                          {
-                             Config.config.textBox1.AppendText("请手动重试...");
+                             Config.config.textBox1.AppendText("释放座位失败，请手动重试...");
+                             Config.config.comboBox1.Enabled = true;
+                             Config.config.comboBox2.Enabled = true;
+                             Config.config.comboBox3.Enabled = true;
+                             Config.config.comboBox4.Enabled = true;
+                             Config.config.comboBox5.Enabled = true;
                              return;
                          }
                      }
@@ -90,7 +156,12 @@ namespace RushSeat
                      {
                          if (RushSeat.StopUsing() != true)
                          {
-                             Config.config.textBox1.AppendText("请手动重试...");
+                             Config.config.textBox1.AppendText("释放座位失败，请手动重试...");
+                             Config.config.comboBox1.Enabled = true;
+                             Config.config.comboBox2.Enabled = true;
+                             Config.config.comboBox3.Enabled = true;
+                             Config.config.comboBox4.Enabled = true;
+                             Config.config.comboBox5.Enabled = true;
                              return;
                          }
                      }
@@ -102,6 +173,7 @@ namespace RushSeat
                              success = true;
                              break;
                          }
+                         
                          Thread.Sleep(500);
                          Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位\n");
                      }
@@ -137,6 +209,11 @@ namespace RushSeat
                          }
 
                          Config.config.button1.Text = "开始抢座";
+                         Config.config.comboBox1.Enabled = true;
+                         Config.config.comboBox2.Enabled = true;
+                         Config.config.comboBox3.Enabled = true;
+                         Config.config.comboBox4.Enabled = true;
+                         Config.config.comboBox5.Enabled = true;
                          break;
                      }
                      else
@@ -148,7 +225,12 @@ namespace RushSeat
                          if(wrong_count == 5)
                          {
                              Config.config.textBox1.AppendText("多次抢座失败，为防止封号中止抢座\n");
-                             Config.config.textBox1.AppendText("请联系开发者\n");
+                             Config.config.textBox1.AppendText("这种情况不常见，请保存工作记录并联系开发者\n");
+                             Config.config.comboBox1.Enabled = true;
+                             Config.config.comboBox2.Enabled = true;
+                             Config.config.comboBox3.Enabled = true;
+                             Config.config.comboBox4.Enabled = true;
+                             Config.config.comboBox5.Enabled = true;
                              return;
                          }
                      }

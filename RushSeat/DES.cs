@@ -16,7 +16,7 @@ namespace RushSeat
         /// 待加密的字符串  
         /// 加密密钥,要求为8位  
         /// 加密成功返回加密后的字符串，失败返回源串   
-        public static string EncryptDES(string encryptString, string encryptKey = "")
+        public static string EncryptDES(string encryptString, string encryptKey = "11111111")
         {
             try
             {
@@ -40,7 +40,7 @@ namespace RushSeat
         /// 待解密的字符串  
         /// 解密密钥,要求为8位,和加密密钥相同  
         /// 解密成功返回解密后的字符串，失败返源串  
-        public static string DecryptDES(string decryptString, string decryptKey = "")
+        public static string DecryptDES(string decryptString, string decryptKey = "11111111")
         {
             try
             {
