@@ -121,6 +121,39 @@ namespace RushSeat
             }
             return;
         }
+        public static void WaitNew(string hour, string minute, string second, bool enter = true)
+        {
+            TimeSpan delta2;
+            time = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + hour + ":" + minute + ":" + second);
+            //Config.config.textBox1.AppendText("等待系统开放:\n");
+            //后台倒计时线程启动
+
+            //Config.config.backgroundWorker1 = new BackgroundWorker(); //不加这句会报不能启动多个backgroundworker的错误
+
+            if (Config.config.backgroundWorker3.IsBusy)
+            {
+                //结束前一进程
+                Config.config.backgroundWorker3.WorkerSupportsCancellation = true;
+                Config.config.backgroundWorker3.CancelAsync();
+                Config.config.backgroundWorker3 = new BackgroundWorker(); //不加这句会报不能启动多个backgroundworker的错误
+                Config.config.textBox1.AppendText("等待前一倒计时进程结束...\n");
+                Thread.Sleep(500);
+            }
+            Config.config.backgroundWorker3.RunWorkerAsync(enter);
+            while (true)
+            {
+                delta2 = RushSeat.time.Subtract(DateTime.Now);
+                if (delta2.TotalSeconds < 0 || stop_waiting == true)
+                {
+                    Config.config.backgroundWorker3.WorkerSupportsCancellation = true;
+                    Config.config.backgroundWorker3.CancelAsync();
+                    break;
+                }
+                //防止控件假死
+                Application.DoEvents();
+            }
+            return;
+        }
 
         public static string GetToken(bool test = false)
         {
