@@ -170,7 +170,7 @@ namespace RushSeat
                 Run.startTime = comboBox2.SelectedValue.ToString();
                 Run.endTime = comboBox3.SelectedValue.ToString();
                 //在22:45之前预约明天的
-                if (Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:45:00")) < 0)
+                if (Config.config.comboBox1.SelectedIndex == 1 && DateTime.Compare(DateTime.Now, Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " 22:44:50")) < 0)
                 {
                     button1.Text = "结束等待";
                     Run.date = comboBox1.SelectedValue.ToString();
@@ -206,7 +206,7 @@ namespace RushSeat
                         //极速模式,此模式下不作任何其它判断，直接抢想要的座位
                         if (comboBox4.SelectedIndex != 0 && comboBox4.SelectedIndex != 1 && comboBox4.SelectedIndex != 2 && comboBox5.SelectedIndex != 0 && checkBox6.Checked == true)
                         {
-                            for (int i = 0; i < 3; i++)
+                            for (int i = 0; i < 20; i++)
                             {
                                 if (RushSeat.BookSeat(comboBox5.SelectedValue.ToString(), Run.date, Run.startTime, Run.endTime) == "Success")
                                 {
@@ -249,8 +249,8 @@ namespace RushSeat
                                     return;
                                 }
                                 //0.5s后再次尝试抢倾向座位
-                                textBox1.AppendText("急速抢座失败，0.5s后再次尝试...");
-                                Thread.Sleep(500);
+                                textBox1.AppendText("急速抢座失败，0.2s后再次尝试...");
+                                Thread.Sleep(200);
                             }
                             textBox1.AppendText("急速抢座失败，转入普通模式");
                         }

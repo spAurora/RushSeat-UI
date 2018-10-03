@@ -168,14 +168,33 @@ namespace RushSeat
 
                      foreach (string seatID in RushSeat.freeSeats)
                      {
-                         if (RushSeat.BookSeat(seatID, date, startTime, endTime) == "Success")
+                         string status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);
+                         //bool outloop = false;
+                         int count_1 = 0;
+                         while (status_1 == "NotAtTime" && count_1 < 15)
                          {
-                             success = true;
-                             break;
+                             count_1 = count_1 + 1;  //真的服了
+                             if (status_1 == "Success")
+                             {
+                                 success = true;
+                                 break;
+                             }
+                             else if (status_1 == "NotAtTime")
+                             {
+                                 Config.config.textBox1.AppendText("系统尚未开放...\n");
+                                 Thread.Sleep(200);
+                             }
+                             status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);
                          }
-                         
-                         Thread.Sleep(500);
-                         Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位\n");
+
+                         //如果成功抢座就跳出foreach循环，如果是抢座失败就根据情况进行下一步操作
+                         if (success == true)
+                             break;
+                         else    //这种情况是没抢过别人，但是这个循环被多重抢座、指定抢座共同使用，不能再根据是否勾选改签来改选，只能先将就一下，指定座位模式下自动改签
+                         {
+                             Thread.Sleep(500);
+                             Config.config.textBox1.AppendText("座位ID " + seatID.ToString() + " 预约失败,尝试预约下一个座位\n");
+                         }
                      }
                      //成功抢座后自动关机
                      if (success == true)

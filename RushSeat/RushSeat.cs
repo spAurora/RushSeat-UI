@@ -745,6 +745,11 @@ namespace RushSeat
 
                 return "Success";
             }
+            else if (jObject["code"].ToString() == "1")  //message中文判断不准确，先用着code，不过感觉有点问题
+            {
+                //Config.config.textBox1.AppendText("系统尚未开放...\n");
+                return ("NotAtTime");
+            }
             else
             {
                 Config.config.textBox1.AppendText(jObject.ToString() + "\n");
