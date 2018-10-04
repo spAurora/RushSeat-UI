@@ -171,9 +171,19 @@ namespace RushSeat
                          string status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);
                          //bool outloop = false;
                          int count_1 = 0;
-                         while (status_1 == "NotAtTime" && count_1 < 15)
+                         if (status_1 == "Success")
+                         {
+                             success = true;
+                             break;
+                         }
+                         Thread.Sleep(300);
+
+                         //如果在系统开放的前后3s内没抢到座位，即使座位还在，也会自动改签
+                         //所以说要注意系统的时间
+                         while (status_1 == "NotAtTime" && count_1 < 10)
                          {
                              count_1 = count_1 + 1;  //真的服了
+                             status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);
                              if (status_1 == "Success")
                              {
                                  success = true;
@@ -182,9 +192,9 @@ namespace RushSeat
                              else if (status_1 == "NotAtTime")
                              {
                                  Config.config.textBox1.AppendText("系统尚未开放...\n");
-                                 Thread.Sleep(200);
+                                 Thread.Sleep(300);
                              }
-                             status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);
+                             //status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);   //放在这里就GG了
                          }
 
                          //如果成功抢座就跳出foreach循环，如果是抢座失败就根据情况进行下一步操作
