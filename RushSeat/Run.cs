@@ -180,7 +180,7 @@ namespace RushSeat
 
                          //如果在系统开放的前后3s内没抢到座位，即使座位还在，也会自动改签
                          //所以说要注意系统的时间
-                         while (status_1 == "NotAtTime" && count_1 < 10)
+                         while (status_1 == "NotAtTime" && count_1 < 20)
                          {
                              count_1 = count_1 + 1;  //真的服了
                              status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);

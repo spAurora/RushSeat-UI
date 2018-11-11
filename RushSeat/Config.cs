@@ -201,6 +201,9 @@ namespace RushSeat
                     if (response == "Success")
                     {
                         textBox1.AppendText("重新获取登录令牌成功!\n");
+                        if (rank == 'A')
+                            RushSeat.WaitNew("22", "44", "58");
+                        else
                         RushSeat.WaitNew("22", "45", Run.waitsecond.ToString());
 
                         //极速模式,此模式下不作任何其它判断，直接抢想要的座位
@@ -249,8 +252,8 @@ namespace RushSeat
                                     return;
                                 }
                                 //0.5s后再次尝试抢倾向座位
-                                textBox1.AppendText("急速抢座失败，0.2s后再次尝试...");
-                                Thread.Sleep(200);
+                                textBox1.AppendText("急速抢座失败，0.5s后再次尝试...");
+                                Thread.Sleep(500);
                             }
                             textBox1.AppendText("急速抢座失败，转入普通模式");
                         }

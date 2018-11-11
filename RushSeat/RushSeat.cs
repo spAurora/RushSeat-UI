@@ -740,7 +740,9 @@ namespace RushSeat
                     strContent += ("地点：" + jObject["data"]["location"].ToString()).Replace("信息科学分馆", "") + "【RS】";
                     strMob += Config.config.textBox3.Text.ToString();
                 }
-
+                //debug
+                Config.config.textBox1.AppendText("(debug)订座成功返回信息" + "\n");
+                Config.config.textBox1.AppendText(jObject.ToString() + "\n");
                 //Config.config.textBox1.AppendText("短信内容：" + strContent);
 
                 return "Success";
@@ -748,10 +750,12 @@ namespace RushSeat
             else if (jObject["code"].ToString() == "1")  //message中文判断不准确，先用着code，不过感觉有点问题
             {
                 //Config.config.textBox1.AppendText("系统尚未开放...\n");
-                return ("NotAtTime");
+                return "NotAtTime";
             }
             else
             {
+                //debug
+                Config.config.textBox1.AppendText("(debug)订座失败返回信息" + "\n");
                 Config.config.textBox1.AppendText(jObject.ToString() + "\n");
                 return "Failed";
             }            
