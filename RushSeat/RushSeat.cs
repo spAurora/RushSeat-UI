@@ -39,7 +39,7 @@ namespace RushSeat
         private static string strMob = "&smsMob=";//手机号码  
         private static string strContent = "&smsText=";// 发送的内容 
 
-        public static string[] rankAList = { "2015302590047", "2015302590096", "2015302590043", "2015302590145", "2015302590143", "2016302590189", "2016302590152", "2017302590158", "2015301610184", "2014302590064", "2016302590082", "2017302590210" };
+        public static string[] rankAList = { "2015302590047", "2015302590096", "2015302590043", "2015302590145", "2015302590143", "2016302590189", "2016302590152", "2017302590158", "2015301610184", "2014302590064", "2016302590082", "2017302590210", "2015302590068" };
         public static List<string> rankBList = new List<string>();
         public static string[] rankDList = { "2015302590102"};
 
@@ -188,7 +188,7 @@ namespace RushSeat
                 }
                 else
                 {
-                    MessageBox.Show(jObject["message"].ToString());
+                    //MessageBox.Show(jObject["message"].ToString());
                     return jObject["message"].ToString();
                 }
             }

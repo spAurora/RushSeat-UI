@@ -45,7 +45,7 @@ namespace RushSeat
 
             string response = "empty";
             int tryNum = 1, col = 0;
-            while (response != "Success" && tryNum != 10)
+            while (response != "Success" && tryNum != 3)
             {
                 response = RushSeat.GetToken(true);
                 if (response == "Success")
@@ -87,6 +87,7 @@ namespace RushSeat
                 else
                 {
                     config.textBox1.AppendText("第"+ tryNum +"次登录失败，3s后重试\n");
+                    config.textBox1.AppendText("[debug]"+ response + "\n");
                     Thread.Sleep(3000);
                     //防止控件假死
                     //Application.DoEvents();
