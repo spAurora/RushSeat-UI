@@ -81,7 +81,8 @@ namespace RushSeat
             SetHeaderValue(request.Headers, "Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             SetHeaderValue(request.Headers, "Connection", "keep-alive");
             SetHeaderValue(request.Headers, "Accept", "*/*");
-            SetHeaderValue(request.Headers, "User-Agent", "doSingle/11 CFNetwork/893.14.2 Darwin/17.3.0");
+            //SetHeaderValue(request.Headers, "User-Agent", "doSingle/11 CFNetwork/893.14.2 Darwin/17.3.0");
+            SetHeaderValue(request.Headers, "User-Agent", "doSingle/11 CFNetwork/976 Darwin/18.2.0");
             SetHeaderValue(request.Headers, "Accept-Language", "zh-cn");
             SetHeaderValue(request.Headers, "token", token);
             SetHeaderValue(request.Headers, "Accept-Encoding", "gzip, deflate");
@@ -298,6 +299,19 @@ namespace RushSeat
                 }
             }
 
+            //在固定时间之前短信提示可用
+            if (DateTime.Compare(DateTime.Now, Convert.ToDateTime("2019-1-1" + " 00:00:00")) < 0)
+            {
+                Config.config.checkBox4.Enabled = true;
+                //Config.config.checkBox4.Checked = true;
+                Config.config.textBox3.Enabled = true;
+                if (File.Exists(@"telnumber.txt"))
+                {
+                    string[] strs2 = File.ReadAllLines(@"telnumber.txt");
+                    Config.config.textBox3.Text = strs2[0];
+                }
+            }
+
             foreach (string i in RushSeat.rankBList)
             {
                 if (jObject["data"]["username"].ToString() == i)
@@ -329,9 +343,9 @@ namespace RushSeat
                 string caste = "Wrong，请联系开发者";
                 switch (Config.rank)
                 {
-                    case 'A': { caste = "A  (0, 1800, 提示可用)"; break; }
-                    case 'B': { caste = "B  (750, 2400，提示不可用)"; break; }
-                    case 'C': { caste = "C  (1500, 3000， 提示不可用)"; break; }
+                    case 'A': { caste = "A  (0, 1800, 短信提示可用)"; break; }
+                    case 'B': { caste = "B  (750, 2400，短信提示暂时可用)"; break; }
+                    case 'C': { caste = "C  (1500, 3000， 短信提示暂时可用)"; break; }
                     case 'D': { caste = "D  (3.6*10^6, 3.6*10^6)"; break; }
                 }
                 Config.config.richTextBox1.Text = "Your Rank：" + caste;

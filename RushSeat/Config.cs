@@ -607,5 +607,10 @@ namespace RushSeat
             else
                 textBox1.AppendText("抢座等待完成...\n");
         }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -67,7 +67,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(680, 732);
+            this.textBox1.Size = new System.Drawing.Size(713, 732);
             this.textBox1.TabIndex = 100;
             this.textBox1.TabStop = false;
             // 
@@ -250,6 +250,7 @@
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(336, 35);
             this.textBox3.TabIndex = 121;
+            this.textBox3.TextChanged += new System.EventHandler(this.textBox3_TextChanged);
             // 
             // label6
             // 
@@ -282,13 +283,13 @@
             // richTextBox1
             // 
             this.richTextBox1.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.richTextBox1.Font = new System.Drawing.Font("华文中宋", 11.95F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.richTextBox1.Font = new System.Drawing.Font("华文中宋", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.richTextBox1.Location = new System.Drawing.Point(604, 48);
             this.richTextBox1.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
             this.richTextBox1.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.None;
-            this.richTextBox1.Size = new System.Drawing.Size(680, 48);
+            this.richTextBox1.Size = new System.Drawing.Size(713, 48);
             this.richTextBox1.TabIndex = 124;
             this.richTextBox1.Text = "";
             // 
@@ -331,7 +332,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1380, 872);
+            this.ClientSize = new System.Drawing.Size(1387, 872);
             this.Controls.Add(this.checkBox6);
             this.Controls.Add(this.checkBox5);
             this.Controls.Add(this.richTextBox1);
@@ -358,7 +359,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Config";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RushSeat X1.5.2";
+            this.Text = "RushSeat X1.6.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Config_FormClosed);
             this.Load += new System.EventHandler(this.Config_Load);
             this.SizeChanged += new System.EventHandler(this.Config_SizeChanged);
