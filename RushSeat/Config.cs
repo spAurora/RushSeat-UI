@@ -206,10 +206,10 @@ namespace RushSeat
                     {
                         textBox1.AppendText("重新获取登录令牌成功!\n");
                         if (rank == 'A')
-                            RushSeat.WaitNew("22", "44", "58");
+                            RushSeat.WaitNew("22", "44", "59");
                         else
                         //18-12-24 现在所有用户处于同一起跑线上
-                        RushSeat.WaitNew("22", "44", "58");
+                        RushSeat.WaitNew("22", "44", "59");
 
                         //极速模式,此模式下不作任何其它判断，直接抢想要的座位
                         if (comboBox4.SelectedIndex != 0 && comboBox4.SelectedIndex != 1 && comboBox4.SelectedIndex != 2 && comboBox5.SelectedIndex != 0 && checkBox6.Checked == true)

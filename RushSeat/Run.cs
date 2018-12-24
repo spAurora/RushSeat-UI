@@ -176,7 +176,8 @@ namespace RushSeat
                              success = true;
                              break;
                          }
-                         Thread.Sleep(300);
+                         //间隔
+                         Thread.Sleep(500);
 
                          //如果在系统开放的前后3s内没抢到座位，即使座位还在，也会自动改签
                          //所以说要注意系统的时间
