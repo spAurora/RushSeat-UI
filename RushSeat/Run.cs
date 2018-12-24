@@ -21,7 +21,7 @@ namespace RushSeat
         public static bool only_computer = false;
 
         //获取空座列表后的等待延迟
-        public static int rankSuccessGetFreeSeat = 1500;
+        public static int rankSuccessGetFreeSeat = 600;
         public static int repeatSearchInterval = 3000;
 
         public static int preventCount = 0;

@@ -61,6 +61,7 @@
             // textBox1
             // 
             this.textBox1.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this.textBox1.Enabled = false;
             this.textBox1.Location = new System.Drawing.Point(604, 104);
             this.textBox1.Margin = new System.Windows.Forms.Padding(4);
             this.textBox1.Multiline = true;
@@ -70,6 +71,7 @@
             this.textBox1.Size = new System.Drawing.Size(713, 732);
             this.textBox1.TabIndex = 100;
             this.textBox1.TabStop = false;
+            this.textBox1.Click += new System.EventHandler(this.textBox1_Click);
             // 
             // button1
             // 
@@ -359,7 +361,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Config";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RushSeat X1.6.0";
+            this.Text = "RushSeat X1.7.0";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Config_FormClosed);
             this.Load += new System.EventHandler(this.Config_Load);
             this.SizeChanged += new System.EventHandler(this.Config_SizeChanged);

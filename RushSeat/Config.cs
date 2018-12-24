@@ -60,6 +60,7 @@ namespace RushSeat
             xt_list.Add(new DictionaryEntry("-2", "2~4楼所有房间"));
             xt_list.Add(new DictionaryEntry("5", "一楼创新学习讨论区"));
             xt_list.Add(new DictionaryEntry("4", "一楼3C创客空间"));
+            xt_list.Add(new DictionaryEntry("13", "一楼3C创客电子阅读"));
             xt_list.Add(new DictionaryEntry("14", "3C创客-双屏电脑(20台)"));
             xt_list.Add(new DictionaryEntry("15", "创新学习-MAC电脑（12台）"));
             xt_list.Add(new DictionaryEntry("16", "创新学习-云桌面（42台）"));
@@ -176,16 +177,19 @@ namespace RushSeat
                     Run.date = comboBox1.SelectedValue.ToString();
                     //防止系统拥堵，不同等级加入不同延迟
                     Random rd = new Random();
-                    if (rank == 'C')
-                        Run.waitsecond = rd.Next(7, 10);
-                    else if (rank == 'A')
-                        Run.waitsecond = 0;
-                    else if (rank == 'B')
-                        Run.waitsecond = rd.Next(3, 5);
-                    else
-                    {
-                        Run.waitsecond = 3600;
-                    }
+
+                    /****这里保留了对D级用户的尊重****/
+                    //if (rank == 'C')
+                    //    Run.waitsecond = rd.Next(7, 10); //
+                    //else if (rank == 'A')
+                    //    Run.waitsecond = 0;
+                    //else if (rank == 'B')
+                    //    Run.waitsecond = rd.Next(3, 5); //
+                    //else
+                    //{
+                    //    Run.waitsecond = 3600;
+                    //}
+
                     //RushSeat.Wait("22", "45", Run.waitsecond.ToString());
                     textBox1.AppendText("将于22:44:50重新获取登录令牌\n");
                     RushSeat.Wait("22", "44", "50");
@@ -204,7 +208,8 @@ namespace RushSeat
                         if (rank == 'A')
                             RushSeat.WaitNew("22", "44", "58");
                         else
-                        RushSeat.WaitNew("22", "45", Run.waitsecond.ToString());
+                        //18-12-24 现在所有用户处于同一起跑线上
+                        RushSeat.WaitNew("22", "44", "58");
 
                         //极速模式,此模式下不作任何其它判断，直接抢想要的座位
                         if (comboBox4.SelectedIndex != 0 && comboBox4.SelectedIndex != 1 && comboBox4.SelectedIndex != 2 && comboBox5.SelectedIndex != 0 && checkBox6.Checked == true)
@@ -611,6 +616,11 @@ namespace RushSeat
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox1_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

@@ -51,7 +51,7 @@ namespace RushSeat
         public static string now_state = "free"; // free空闲 wait等待 supervise监测抢座
 
         //信部全馆房间编号
-        public static string[] roomList_b1 = {"4", "5", "6", "7", "8", "9", "10", "11", "12", "14", "15" ,"16"};
+        public static string[] roomList_b1 = {"4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" ,"16"};
         public static string[] roomList_f1 = {"4", "5", "14" , "15", "16"};
         public static string[] roomList_f2t4 = {"6", "7", "8", "9", "10", "11", "12"};
 
@@ -229,7 +229,7 @@ namespace RushSeat
                             if (alert)
                             {
                                 Config.config.textBox1.AppendText("检测到已有有效预约:\n");
-                                Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n时间: " + res["date"] + " " + res["begin"] + "~" + res["end"] + "\n");
+                                Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n" + "位置: " + res["loc"].ToString() + "\r\n" + "时间: " + res["date"] + " " + res["begin"] + "~" + res["end"] + "\n");
                                 Config.config.textBox1.AppendText("若释放座位可点击释放座位，若不释放座位可以自动改签\n");
                                 Config.config.textBox1.AppendText("---------------------------------------\n");
                             }
@@ -317,8 +317,8 @@ namespace RushSeat
                 if (jObject["data"]["username"].ToString() == i)
                 {
                     Config.rank = 'B';
-                    Run.rankSuccessGetFreeSeat = 750;
-                    Run.repeatSearchInterval = 2400;
+                    Run.rankSuccessGetFreeSeat = 300;
+                    Run.repeatSearchInterval = 2500;
                     break;
                 }
             }
