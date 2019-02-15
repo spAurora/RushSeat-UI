@@ -136,7 +136,7 @@ namespace RushSeat
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+
             if (checkBox4.Checked)
             {
                     string[] strs = { textBox3.Text.ToString()};

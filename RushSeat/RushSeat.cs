@@ -299,8 +299,8 @@ namespace RushSeat
                 }
             }
 
-            //在固定时间之前短信提示可用
-            if (DateTime.Compare(DateTime.Now, Convert.ToDateTime("2019-1-1" + " 00:00:00")) < 0)
+            //在固定时间之前C级用户短信提示可用
+            if (DateTime.Compare(DateTime.Now, Convert.ToDateTime("2019-2-1" + " 00:00:00")) < 0)
             {
                 Config.config.checkBox4.Enabled = true;
                 //Config.config.checkBox4.Checked = true;
@@ -317,11 +317,21 @@ namespace RushSeat
                 if (jObject["data"]["username"].ToString() == i)
                 {
                     Config.rank = 'B';
+                    //B级用户永久解锁短信提示
+                    Config.config.checkBox4.Enabled = true;
+                    //Config.config.checkBox4.Checked = true;
+                    Config.config.textBox3.Enabled = true;
+                    if (File.Exists(@"telnumber.txt"))
+                    {
+                        string[] strs2 = File.ReadAllLines(@"telnumber.txt");
+                        Config.config.textBox3.Text = strs2[0];
+                    }
                     Run.rankSuccessGetFreeSeat = 300;
-                    Run.repeatSearchInterval = 2500;
+                    Run.repeatSearchInterval = 2400;
                     break;
                 }
             }
+
             foreach (string i in RushSeat.rankDList)
             {
                 if (jObject["data"]["username"].ToString() == i)
@@ -343,9 +353,9 @@ namespace RushSeat
                 string caste = "Wrong，请联系开发者";
                 switch (Config.rank)
                 {
-                    case 'A': { caste = "A  (0, 1800, 短信提示可用)"; break; }
-                    case 'B': { caste = "B  (750, 2400，短信提示暂时可用)"; break; }
-                    case 'C': { caste = "C  (1500, 3000， 短信提示暂时可用)"; break; }
+                    case 'A': { caste = "A  (0, " + Run.repeatSearchInterval.ToString() + ", 短信提示可用)"; break; }
+                    case 'B': { caste = "B  (300, " + Run.repeatSearchInterval.ToString() + "，短信提示可用)"; break; }
+                    case 'C': { caste = "C  (600, " + Run.repeatSearchInterval.ToString() + "， 短信提示可用)"; break; }
                     case 'D': { caste = "D  (3.6*10^6, 3.6*10^6)"; break; }
                 }
                 Config.config.richTextBox1.Text = "Your Rank：" + caste;
@@ -761,9 +771,12 @@ namespace RushSeat
 
                 return "Success";
             }
-            else if (jObject["code"].ToString() == "1")  //message中文判断不准确，先用着code，不过感觉有点问题
+            else if (jObject["message"].ToString() == "系统可预约时间为 22:45 ~ 23:50")  //message中文判断
             {
+                //只有在启动倒计时预约明日座位才会返回notattime
                 //Config.config.textBox1.AppendText("系统尚未开放...\n");
+                //debug
+                //Config.config.textBox1.AppendText(jObject.ToString() + "\n");
                 return "NotAtTime";
             }
             else

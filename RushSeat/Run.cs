@@ -96,6 +96,14 @@ namespace RushSeat
                                      break;
                                  }
                                  Thread.Sleep(repeatSearchInterval);
+                                 if (RushSeat.stop_rush == true)
+                                 {
+                                     Config.config.textBox1.AppendText("用户取消抢座\n");
+                                     Config.config.textBox1.AppendText("-------------------------------------------\n");
+                                     Config.config.button1.Text = "开始抢座";
+                                     RushSeat.stop_rush = false;
+                                     return;
+                                 }
                              }
                              break;
                          }
@@ -108,6 +116,14 @@ namespace RushSeat
                                          break;
                                      }
                                      Thread.Sleep(repeatSearchInterval);
+                                     if (RushSeat.stop_rush == true)
+                                     {
+                                         Config.config.textBox1.AppendText("用户取消抢座\n");
+                                         Config.config.textBox1.AppendText("-------------------------------------------\n");
+                                         Config.config.button1.Text = "开始抢座";
+                                         RushSeat.stop_rush = false;
+                                         return;
+                                     }
                                  }
                                  break;
                              }
@@ -121,6 +137,14 @@ namespace RushSeat
                                          break;
                                      }
                                      Thread.Sleep(repeatSearchInterval);
+                                     if (RushSeat.stop_rush == true)
+                                     {
+                                         Config.config.textBox1.AppendText("用户取消抢座\n");
+                                         Config.config.textBox1.AppendText("-------------------------------------------\n");
+                                         Config.config.button1.Text = "开始抢座";
+                                         RushSeat.stop_rush = false;
+                                         return;
+                                     }
                                  }
                                  break;
                              }
@@ -181,7 +205,7 @@ namespace RushSeat
 
                          //如果在系统开放的前后3s内没抢到座位，即使座位还在，也会自动改签
                          //所以说要注意系统的时间
-                         while (status_1 == "NotAtTime" && count_1 < 20)
+                         while (status_1 == "NotAtTime" && count_1 < 10)
                          {
                              count_1 = count_1 + 1;  //真的服了
                              status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);
@@ -193,7 +217,7 @@ namespace RushSeat
                              else if (status_1 == "NotAtTime")
                              {
                                  Config.config.textBox1.AppendText("系统尚未开放...\n");
-                                 Thread.Sleep(300);
+                                 Thread.Sleep(500);
                              }
                              //status_1 = RushSeat.BookSeat(seatID, date, startTime, endTime);   //放在这里就GG了
                          }

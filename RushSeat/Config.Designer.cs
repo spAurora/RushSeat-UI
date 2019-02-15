@@ -361,7 +361,7 @@
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "Config";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "RushSeat X1.7.1";
+            this.Text = "RushSeat X1.7.2";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Config_FormClosed);
             this.Load += new System.EventHandler(this.Config_Load);
             this.SizeChanged += new System.EventHandler(this.Config_SizeChanged);
