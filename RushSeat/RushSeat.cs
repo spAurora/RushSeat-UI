@@ -300,7 +300,7 @@ namespace RushSeat
             }
 
             //在固定时间之前C级用户短信提示可用
-            if (DateTime.Compare(DateTime.Now, Convert.ToDateTime("2019-2-1" + " 00:00:00")) < 0)
+            if (DateTime.Compare(DateTime.Now, Convert.ToDateTime("2019-8-1" + " 00:00:00")) < 0)
             {
                 Config.config.checkBox4.Enabled = true;
                 //Config.config.checkBox4.Checked = true;

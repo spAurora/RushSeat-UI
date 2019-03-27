@@ -58,3 +58,15 @@ C:\Users\WHY\Desktop\RushSeatX1.5\RushSeat-UI\RushSeat\obj\Release\RushSeat.Logi
 C:\Users\WHY\Desktop\RushSeatX1.5\RushSeat-UI\RushSeat\obj\Release\RushSeat.Properties.Resources.resources
 C:\Users\WHY\Desktop\RushSeatX1.5\RushSeat-UI\RushSeat\obj\Release\RushSeat.csproj.GenerateResource.Cache
 C:\Users\Why\Desktop\RushSeat-UI\RushSeat\obj\Release\RushSeat.csprojResolveAssemblyReference.cache
+C:\QQ文件\RushSeat-UI\RushSeat\bin\Release\RushSeat.exe.config
+C:\QQ文件\RushSeat-UI\RushSeat\obj\Release\RushSeat.exe
+C:\QQ文件\RushSeat-UI\RushSeat\obj\Release\RushSeat.pdb
+C:\QQ文件\RushSeat-UI\RushSeat\bin\Release\RushSeat.exe
+C:\QQ文件\RushSeat-UI\RushSeat\bin\Release\RushSeat.pdb
+C:\QQ文件\RushSeat-UI\RushSeat\bin\Release\Newtonsoft.Json.dll
+C:\QQ文件\RushSeat-UI\RushSeat\bin\Release\Newtonsoft.Json.xml
+C:\QQ文件\RushSeat-UI\RushSeat\obj\Release\RushSeat.csprojResolveAssemblyReference.cache
+C:\QQ文件\RushSeat-UI\RushSeat\obj\Release\RushSeat.Config.resources
+C:\QQ文件\RushSeat-UI\RushSeat\obj\Release\RushSeat.Login.resources
+C:\QQ文件\RushSeat-UI\RushSeat\obj\Release\RushSeat.Properties.Resources.resources
+C:\QQ文件\RushSeat-UI\RushSeat\obj\Release\RushSeat.csproj.GenerateResource.Cache

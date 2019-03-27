@@ -43,7 +43,7 @@ namespace RushSeat
 
             Config.config.textBox1.AppendText("1. 软件作者本意只是为了方便学习，无意对预约系统造成任何不良影响\n");
             Config.config.textBox1.AppendText("2. 程序中涉及的个人信息已经过DES加密处理\n");
-            Config.config.textBox1.AppendText("3. 程序第二试用期至2019-2-1，未来会视情况而定\n");
+            Config.config.textBox1.AppendText("3. 程序第三试用期至2019-8-1，未来会视情况而定\n");
             Config.config.textBox1.AppendText("4. 普通用户等级为第三级，等级会影响到可以使用的功能以及关键功能延迟(等级后面的2个数字单位为毫秒)，如想提升等级请\"收集程序BUG或者提出其它改进建议\"，并联系QQ：751984964∩ω∩\n");
             Config.config.textBox1.AppendText("5. 程序完全免费，祝大家用的开心●ω●\n");
 
