@@ -1,4 +1,4 @@
-﻿# 武大图书馆抢座程序RushSeat-UI(R1.0.0)<br>
+﻿# 武大图书馆抢座程序RushSeat-UI(X1.6)<br>
 - - -
 ## 目前实现的功能：<br>
 
@@ -15,7 +15,8 @@
 拓展检索空间（检索房间组合)<br>
 - - -
 ## 未来计划实现功能：<br>
-无<br>
+由于改签的时候释放座位在前，有极低的概率改签失败，这时候可以重新定回原先的座位<br>
+用户体验优化<br>
 - - -
 ## 运行截图：<br>
 ![](https://github.com/spAurora/RushSeat-UI/blob/master/pic/login.png)
