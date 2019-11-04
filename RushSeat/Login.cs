@@ -107,7 +107,7 @@ namespace RushSeat
         private void Login_Load(object sender, EventArgs e)
         {
             //检查程序是否过期
-            if (DateTime.Compare(DateTime.Now, Convert.ToDateTime("2019-8-1" + " 00:00:00")) > 0)
+            if (DateTime.Compare(DateTime.Now, Convert.ToDateTime("2099-8-1" + " 00:00:00")) > 0)
             {
                 MessageBox.Show("使用期已过！请进入发布群获取最新版");
                 System.Environment.Exit(0);
