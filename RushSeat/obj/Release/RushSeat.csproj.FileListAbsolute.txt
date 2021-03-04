@@ -82,3 +82,15 @@ C:\Users\WHY\Desktop\newrushseat\RushSeat-UI\RushSeat-UI\RushSeat\obj\Release\Ru
 C:\Users\WHY\Desktop\newrushseat\RushSeat-UI\RushSeat-UI\RushSeat\obj\Release\RushSeat.Login.resources
 C:\Users\WHY\Desktop\newrushseat\RushSeat-UI\RushSeat-UI\RushSeat\obj\Release\RushSeat.Properties.Resources.resources
 C:\Users\WHY\Desktop\newrushseat\RushSeat-UI\RushSeat-UI\RushSeat\obj\Release\RushSeat.csproj.GenerateResource.Cache
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\bin\Release\RushSeat.exe.config
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\obj\Release\RushSeat.exe
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\obj\Release\RushSeat.pdb
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\bin\Release\RushSeat.exe
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\bin\Release\RushSeat.pdb
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\bin\Release\Newtonsoft.Json.dll
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\bin\Release\Newtonsoft.Json.xml
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\obj\Release\RushSeat.csprojResolveAssemblyReference.cache
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\obj\Release\RushSeat.Config.resources
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\obj\Release\RushSeat.Login.resources
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\obj\Release\RushSeat.Properties.Resources.resources
+C:\Users\75198\Desktop\RushSeat-UI-master\RushSeat\obj\Release\RushSeat.csproj.GenerateResource.Cache

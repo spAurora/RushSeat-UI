@@ -41,15 +41,15 @@ namespace RushSeat
            
 
 
-            Config.config.textBox1.AppendText("1. 绿色、免费小软件\n");
-            Config.config.textBox1.AppendText("2. 合理使用，宽以待人\n");
-            Config.config.textBox1.AppendText("3. 程序使用期限至2099-8-1\n");
-            Config.config.textBox1.AppendText("4. 普通用户等级为第三级，等级会影响到可以使用的功能以及关键功能延迟，如想提升等级请在源码中A级列表中加入自己学号并重新编译\n");
-            Config.config.textBox1.AppendText("5. 山水一程，三生有幸，值此一别，天涯路远，流年笑掷，未来可期，我在中科院祝各位学业、工作一帆风顺！\n");
-            Config.config.textBox1.AppendText("                               ——by wHy 2019-7-22\n");
-            Config.config.textBox1.AppendText("\n");
-            Config.config.textBox1.AppendText("注：发布群117805521，开源地址见https://github.com/spAurora/RushSeat-UI.git\n，联系本人QQ：751984964\n");
-            Config.config.textBox1.AppendText("---------------------------------------\n");
+            Config.config.textBox1.AppendText("1. 绿色、免费小软件\r\n");
+            Config.config.textBox1.AppendText("2. 合理使用，宽以待人\r\n");
+            Config.config.textBox1.AppendText("3. 程序使用期限至2099-8-1\r\n");
+            Config.config.textBox1.AppendText("4. 普通用户等级为第三级，等级会影响到可以使用的功能以及关键功能延迟，如想提升等级请在源码中A级列表中加入自己学号并重新编译\r\n");
+            Config.config.textBox1.AppendText("5. 山水一程，三生有幸，值此一别，天涯路远，流年笑掷，未来可期，我在中科院祝各位学业、工作一帆风顺！\r\n");
+            Config.config.textBox1.AppendText("                               ——by wHy 2019-7-22\r\n");
+            Config.config.textBox1.AppendText("\r\n");
+            Config.config.textBox1.AppendText("注：发布群117805521\r\n开源地址:https://github.com/spAurora/RushSeat-UI.git\r\n");
+            Config.config.textBox1.AppendText("---------------------------------------\r\n");
 
             
             //Run.date = comboBox1.SelectedValue.ToString();
@@ -192,7 +192,7 @@ namespace RushSeat
                     //}
 
                     //RushSeat.Wait("22", "45", Run.waitsecond.ToString());
-                    textBox1.AppendText("将于22:44:50重新获取登录令牌\n");
+                    textBox1.AppendText("将于22:44:50重新获取登录令牌\r\n");
                     RushSeat.Wait("22", "44", "50");
                     Thread.Sleep(1000);
                     //如果是用户停止等待
@@ -205,7 +205,7 @@ namespace RushSeat
                     string response = RushSeat.GetToken(true);
                     if (response == "Success")
                     {
-                        textBox1.AppendText("重新获取登录令牌成功!\n");
+                        textBox1.AppendText("重新获取登录令牌成功!\r\n");
                         if (rank == 'A')
                             RushSeat.WaitNew("22", "44", "59");
                         else
@@ -219,7 +219,7 @@ namespace RushSeat
                             {
                                 if (RushSeat.BookSeat(comboBox5.SelectedValue.ToString(), Run.date, Run.startTime, Run.endTime) == "Success")
                                 {
-                                    //textBox1.AppendText("急速模式下抢座成功！\n");
+                                    //textBox1.AppendText("急速模式下抢座成功！\r\n");
                                     //静默检查预约信息，激活释放按钮
                                     RushSeat.CheckHistoryInf(false);
 
@@ -231,16 +231,16 @@ namespace RushSeat
                                     //发短信
                                     if (Config.config.checkBox4.Checked)
                                     {
-                                        Config.config.textBox1.AppendText("短信已发送，返回值：\n" + RushSeat.SendMessage() + "\n");
-                                        Config.config.textBox1.AppendText("若返回值小于0为发送失败，请联系开发者\n");
-                                        Config.config.textBox1.AppendText("------------------------------------------\n");
+                                        Config.config.textBox1.AppendText("短信已发送，返回值：\r\n" + RushSeat.SendMessage() + "\r\n");
+                                        Config.config.textBox1.AppendText("若返回值小于0为发送失败，请联系开发者\r\n");
+                                        Config.config.textBox1.AppendText("------------------------------------------\r\n");
                                     }
 
                                     if (Config.config.checkBox3.Checked)
                                     {
-                                        Config.config.textBox1.AppendText("2min后自动关机\n");
-                                        Config.config.textBox1.AppendText("如果想取消自动关机请在桌面用快捷键win + R启动控制台, 在控制台自行输入 shutdown -a\n");
-                                        Config.config.textBox1.AppendText("-----------------------------------------------------\n");
+                                        Config.config.textBox1.AppendText("2min后自动关机\r\n");
+                                        Config.config.textBox1.AppendText("如果想取消自动关机请在桌面用快捷键win + R启动控制台, 在控制台自行输入 shutdown -a\r\n");
+                                        Config.config.textBox1.AppendText("-----------------------------------------------------\r\n");
                                         Process.Start("shutdown.exe", "-s -t " + "120");
                                     }
                                     else
@@ -275,7 +275,7 @@ namespace RushSeat
                     }
                     else
                     {
-                        textBox1.AppendText("重新获取登录令牌失败，相应信息如下：\n");
+                        textBox1.AppendText("重新获取登录令牌失败，相应信息如下：\r\n");
                         textBox1.AppendText(response);
                     }
                 }
@@ -306,7 +306,7 @@ namespace RushSeat
                     string response = RushSeat.GetToken(true);
                     if (response == "Success")
                     {
-                        textBox1.AppendText("再次登录成功!\n");
+                        textBox1.AppendText("再次登录成功!\r\n");
                         Run.Start();
                     }
                     else
@@ -408,7 +408,7 @@ namespace RushSeat
                 //int end = textBox1.GetFirstCharIndexFromLine(1);//第二行第一个字符的索引
                 //textBox1.Select(start, end);//选中第一行
                 //textBox1.SelectedText = "";//设置第一行的内容为空
-                //textBox1.AppendText("剩余时间: " + (delta.ToString()).Substring(0, 8) + "\n");
+                //textBox1.AppendText("剩余时间: " + (delta.ToString()).Substring(0, 8) + "\r\n");
                 int index = textBox1.GetFirstCharIndexOfCurrentLine();
                 textBox1.Select(index-1, textBox1.TextLength - index);
                 textBox1.SelectedText = "\r\n剩余时间: " + (delta.ToString()).Substring(0, 8) + "\r\n";
@@ -418,9 +418,9 @@ namespace RushSeat
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (RushSeat.stop_waiting == true)
-                textBox1.AppendText("用户中止等待...\n");
+                textBox1.AppendText("用户中止等待...\r\n");
             else
-                textBox1.AppendText("令牌获取等待完成...\n");
+                textBox1.AppendText("令牌获取等待完成...\r\n");
         }
 
         private void Config_FormClosed(object sender, FormClosedEventArgs e)
@@ -590,7 +590,7 @@ namespace RushSeat
             {
                 //int index = textBox1.GetFirstCharIndexOfCurrentLine();
                 //textBox1.AppendText("\r\n倒计时器启动(次日预约开放时间 22:45 当日预约开放时间 1:00)：\r\n");
-                textBox1.AppendText("\n10s后开始抢座...\n");
+                textBox1.AppendText("\r\n10s后开始抢座...\r\n");
                 first = false;
             }
             else
@@ -599,7 +599,7 @@ namespace RushSeat
                 //int end = textBox1.GetFirstCharIndexFromLine(1);//第二行第一个字符的索引
                 //textBox1.Select(start, end);//选中第一行
                 //textBox1.SelectedText = "";//设置第一行的内容为空
-                //textBox1.AppendText("剩余时间: " + (delta.ToString()).Substring(0, 8) + "\n");
+                //textBox1.AppendText("剩余时间: " + (delta.ToString()).Substring(0, 8) + "\r\n");
                 //int index = textBox1.GetFirstCharIndexOfCurrentLine();
                 //textBox1.Select(index - 1, textBox1.TextLength - index);
                 //textBox1.SelectedText = "\r\n剩余时间: " + (delta.ToString()).Substring(0, 8) + "\r\n";
@@ -609,9 +609,9 @@ namespace RushSeat
         private void backgroundWorker3_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (RushSeat.stop_waiting == true)
-                textBox1.AppendText("用户中止抢座...\n");
+                textBox1.AppendText("用户中止抢座...\r\n");
             else
-                textBox1.AppendText("抢座等待完成...\n");
+                textBox1.AppendText("抢座等待完成...\r\n");
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)

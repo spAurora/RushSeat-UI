@@ -57,8 +57,8 @@ namespace RushSeat
                     col = 1;
                   
 
-                    config.textBox1.AppendText("登录成功!\n");
-                    Config.config.textBox1.AppendText("---------------------------------------\n");
+                    config.textBox1.AppendText("登录成功!\r\n");
+                    Config.config.textBox1.AppendText("---------------------------------------\r\n");
                     //获取各个房间的座位列表
                     config.comboBox4.SelectedIndex = 0;
                     config.comboBox2.SelectedIndex = 4;  //默认10点开始
@@ -76,19 +76,19 @@ namespace RushSeat
                     RushSeat.GetUserInfo();
                     if (RushSeat.CheckHistoryInf(true) == "NO")
                     {
-                        config.textBox1.AppendText("当前无有效预约\n");
+                        config.textBox1.AppendText("当前无有效预约\r\n");
                     }
                     else  //已经有有效预约
                     {
 
                     }
-                    Config.config.textBox1.AppendText("剩余可发送短信数目：" + RushSeat.GetSMSNum() + "\n");
-                    Config.config.textBox1.AppendText("---------------------\n");
+                    Config.config.textBox1.AppendText("剩余可发送短信数目：" + RushSeat.GetSMSNum() + "\r\n");
+                    Config.config.textBox1.AppendText("---------------------\r\n");
                 }
                 else
                 {
-                    config.textBox1.AppendText("第"+ tryNum +"次登录失败，3s后重试\n");
-                    config.textBox1.AppendText("[info]"+ response + "\n");
+                    config.textBox1.AppendText("\r\n第"+ tryNum +"次登录失败，3s后重试\r\n");
+                    config.textBox1.AppendText("[info]"+ response + "\r\n");
                     for (int i = 0; i < 10; i++)
                     {
                         Application.DoEvents();

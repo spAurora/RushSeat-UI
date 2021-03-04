@@ -39,7 +39,7 @@ namespace RushSeat
         private static string strMob = "&smsMob=";//手机号码  
         private static string strContent = "&smsText=";// 发送的内容 
 
-        public static string[] rankAList = { "2015302590047", "2015302590096", "2015302590043", "2015302590145", "2015302590143", "2016302590189", "2016302590152", "2017302590158", "2015301610184", "2014302590064", "2016302590082", "2017302590210", "2015302590068", "2015302590105" };
+        public static string[] rankAList = { "2015302590047", "2015302590096", "2015302590043", "2015302590145", "2015302590143", "2016302590189", "2016302590152", "2017302590158", "2015301610184", "2014302590064", "2016302590082", "2017302590210", "2015302590068", "2015302590105", "2019282130110" };
         public static List<string> rankBList = new List<string>();
         public static string[] rankDList = { "2015302590102"};
 
@@ -93,7 +93,7 @@ namespace RushSeat
         {
             TimeSpan delta2;
             time = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + hour + ":" + minute + ":" + second);
-            //Config.config.textBox1.AppendText("等待系统开放:\n");
+            //Config.config.textBox1.AppendText("等待系统开放:\r\n");
             //后台倒计时线程启动
             
             //Config.config.backgroundWorker1 = new BackgroundWorker(); //不加这句会报不能启动多个backgroundworker的错误
@@ -104,7 +104,7 @@ namespace RushSeat
                 Config.config.backgroundWorker1.WorkerSupportsCancellation = true;
                 Config.config.backgroundWorker1.CancelAsync();
                 Config.config.backgroundWorker1 = new BackgroundWorker(); //不加这句会报不能启动多个backgroundworker的错误
-                Config.config.textBox1.AppendText("等待前一倒计时进程结束...\n");
+                Config.config.textBox1.AppendText("等待前一倒计时进程结束...\r\n");
                 Thread.Sleep(500);
             }
             Config.config.backgroundWorker1.RunWorkerAsync(enter);
@@ -126,7 +126,7 @@ namespace RushSeat
         {
             TimeSpan delta2;
             time = Convert.ToDateTime(DateTime.Now.ToString("yyyy-MM-dd") + " " + hour + ":" + minute + ":" + second);
-            //Config.config.textBox1.AppendText("等待系统开放:\n");
+            //Config.config.textBox1.AppendText("等待系统开放:\r\n");
             //后台倒计时线程启动
 
             //Config.config.backgroundWorker1 = new BackgroundWorker(); //不加这句会报不能启动多个backgroundworker的错误
@@ -137,7 +137,7 @@ namespace RushSeat
                 Config.config.backgroundWorker3.WorkerSupportsCancellation = true;
                 Config.config.backgroundWorker3.CancelAsync();
                 Config.config.backgroundWorker3 = new BackgroundWorker(); //不加这句会报不能启动多个backgroundworker的错误
-                Config.config.textBox1.AppendText("等待前一倒计时进程结束...\n");
+                Config.config.textBox1.AppendText("等待前一倒计时进程结束...\r\n");
                 Thread.Sleep(500);
             }
             Config.config.backgroundWorker3.RunWorkerAsync(enter);
@@ -228,10 +228,10 @@ namespace RushSeat
                         {
                             if (alert)
                             {
-                                Config.config.textBox1.AppendText("检测到已有有效预约:\n");
-                                Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n" + "位置: " + res["loc"].ToString() + "\r\n" + "时间: " + res["date"] + " " + res["begin"] + "~" + res["end"] + "\n");
-                                Config.config.textBox1.AppendText("若释放座位可点击释放座位，若不释放座位可以自动改签\n");
-                                Config.config.textBox1.AppendText("---------------------------------------\n");
+                                Config.config.textBox1.AppendText("检测到已有有效预约:\r\n");
+                                Config.config.textBox1.AppendText("ID: " + res["id"] + "\r\n" + "位置: " + res["loc"].ToString() + "\r\n" + "时间: " + res["date"] + " " + res["begin"] + "~" + res["end"] + "\r\n");
+                                Config.config.textBox1.AppendText("若释放座位可点击释放座位，若不释放座位可以自动改签\r\n");
+                                Config.config.textBox1.AppendText("---------------------------------------\r\n");
                             }
                             //激活释放按钮
                             Config.config.button2.Enabled = true;
@@ -264,8 +264,8 @@ namespace RushSeat
                 = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
 
-            Config.config.textBox1.AppendText("\n--------------------------\n");
-            Config.config.textBox1.AppendText("正在获取你的信息:\n");
+            Config.config.textBox1.AppendText("\r\n--------------------------\r\n");
+            Config.config.textBox1.AppendText("正在获取你的信息:\r\n");
 
             try
             {
@@ -348,8 +348,8 @@ namespace RushSeat
 
             if (jObject["status"].ToString() == "success")
             {
-                Config.config.textBox1.AppendText("姓名：" + jObject["data"]["name"].ToString() + "\n");
-                Config.config.textBox1.AppendText("学号：" + jObject["data"]["username"].ToString() + "\n");
+                Config.config.textBox1.AppendText("姓名：" + jObject["data"]["name"].ToString() + "\r\n");
+                Config.config.textBox1.AppendText("学号：" + jObject["data"]["username"].ToString() + "\r\n");
                 string caste = "Wrong，请联系开发者";
                 switch (Config.rank)
                 {
@@ -362,9 +362,9 @@ namespace RushSeat
                 //阶级部分字体变红
                 Config.config.richTextBox1.Select(10, 3);
                 Config.config.richTextBox1.SelectionColor = Color.Red;
-                Config.config.textBox1.AppendText("违约次数：" + jObject["data"]["violationCount"].ToString() +"\n");
-                Config.config.textBox1.AppendText("Lastlogin:" + jObject["data"]["lastLogin"].ToString() + "\n");
-                Config.config.textBox1.AppendText("---------------------------------------\n");
+                Config.config.textBox1.AppendText("违约次数：" + jObject["data"]["violationCount"].ToString() +"\r\n");
+                Config.config.textBox1.AppendText("Lastlogin:" + jObject["data"]["lastLogin"].ToString() + "\r\n");
+                Config.config.textBox1.AppendText("---------------------------------------\r\n");
                 
                 return true;
             }
@@ -372,8 +372,8 @@ namespace RushSeat
             }
             catch
             {
-                Config.config.textBox1.AppendText("获取信息失败，估计是被关小黑屋了...第二天会解封\n");
-                Config.config.textBox1.AppendText("---------------------------------------\n");
+                Config.config.textBox1.AppendText("获取信息失败，估计是被关小黑屋了...第二天会解封\r\n");
+                Config.config.textBox1.AppendText("---------------------------------------\r\n");
                 return false;
             }
             return false;
@@ -389,7 +389,7 @@ namespace RushSeat
             SetHeaderValues(request);
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
-            Config.config.textBox1.AppendText("正在取消当前预约... : \n");
+            Config.config.textBox1.AppendText("正在取消当前预约... : \r\n");
             try
             {
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -400,7 +400,7 @@ namespace RushSeat
                 JObject jObject = JObject.Parse(json);
                 if (jObject["status"].ToString() == "success")
                 {
-                    Config.config.textBox1.AppendText("取消当前预约成功\n");
+                    Config.config.textBox1.AppendText("取消当前预约成功\r\n");
                     return true;
                 }
                 else
@@ -411,7 +411,7 @@ namespace RushSeat
             }
             catch
             {
-               Config.config.textBox1.AppendText("Connection lost\n");
+               Config.config.textBox1.AppendText("Connection lost\r\n");
                return false;
             }
         }
@@ -424,7 +424,7 @@ namespace RushSeat
             SetHeaderValues(request);
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
-            Config.config.textBox1.AppendText("\r\n正在结束使用当前座位...\n");
+            Config.config.textBox1.AppendText("\r\n正在结束使用当前座位...\r\n");
 
             try
             {
@@ -436,7 +436,7 @@ namespace RushSeat
                 JObject jObject = JObject.Parse(json);
                 if (jObject["status"].ToString() == "success")
                 {
-                    Config.config.textBox1.AppendText("结束当前使用成功\n");
+                    Config.config.textBox1.AppendText("结束当前使用成功\r\n");
                     return true;
                 }
                 else
@@ -447,7 +447,7 @@ namespace RushSeat
             }
             catch
             {
-                Config.config.textBox1.AppendText("Connection lost\n");
+                Config.config.textBox1.AppendText("Connection lost\r\n");
                 return false;
             }
         }
@@ -473,7 +473,7 @@ namespace RushSeat
                 byte[] data = Encoding.UTF8.GetBytes(buffer.ToString());
                 request.ContentLength = data.Length;
                 request.GetRequestStream().Write(data, 0, data.Length);
-                //Config.config.textBox1.AppendText("正在获取空座信息...\n");
+                //Config.config.textBox1.AppendText("正在获取空座信息...\r\n");
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 Encoding encoding = Encoding.GetEncoding("UTF-8");
@@ -486,7 +486,7 @@ namespace RushSeat
                     //查到空座就将座位ID放入freeseat中
                     if (jObject["data"]["seats"].ToString() != "{}")
                     {
-                        //Config.config.textBox1.AppendText("success\n");
+                        //Config.config.textBox1.AppendText("success\r\n");
                         JToken seats = jObject["data"]["seats"];
 
                         //18/5/5 此处存在BUG
@@ -517,18 +517,18 @@ namespace RushSeat
                         //add 检查是否真正检索到符合条件座位
                         if (freeSeats.Count != 0)
                         {
-                            Config.config.textBox1.AppendText("成功检索到符合条件座位\n");
+                            Config.config.textBox1.AppendText("成功检索到符合条件座位\r\n");
                             return "Success";
                         }
                         else
                         {
-                            Config.config.textBox1.AppendText("没有符合条件的空座了" + (((double)Run.repeatSearchInterval) / 1000).ToString() + "s后会再次检索\n");
+                            Config.config.textBox1.AppendText("没有符合条件的空座了" + (((double)Run.repeatSearchInterval) / 1000).ToString() + "s后会再次检索\r\n");
                             return "NoFreeSeat";
                         }
                     }
                     else
                     {
-                        Config.config.textBox1.AppendText("没有符合条件的空座了" + (((double)Run.repeatSearchInterval) / 1000).ToString() + "s后会再次检索\n");
+                        Config.config.textBox1.AppendText("没有符合条件的空座了" + (((double)Run.repeatSearchInterval) / 1000).ToString() + "s后会再次检索\r\n");
                         return "NoFreeSeat";
                     }
                 }
@@ -545,11 +545,11 @@ namespace RushSeat
                         //    if (num.First["name"].ToString() == Config.config.comboBox5.SelectedValue.ToString())
                         //    {
                         //        freeSeats.Add(num.First["id"].ToString());
-                        //        Config.config.textBox1.AppendText("检索到空闲的倾向座位, 尝试预约...\n");
+                        //        Config.config.textBox1.AppendText("检索到空闲的倾向座位, 尝试预约...\r\n");
                         //        return "Success";
                         //    }
                         //}
-                        //Config.config.textBox1.AppendText("倾向座位已被预约但房间内有其它空座\n");
+                        //Config.config.textBox1.AppendText("倾向座位已被预约但房间内有其它空座\r\n");
                         //return "NoMatchSeat";
                         ArrayList freeSeatsName = new ArrayList();
                         bool one = true;
@@ -559,8 +559,8 @@ namespace RushSeat
                             get = false;
                             if (one)
                             {
-                                //Config.config.textBox1.AppendText(Int32.Parse("056").ToString() + "\n");
-                                //Config.config.textBox1.AppendText(Config.config.comboBox5.SelectedIndex.ToString() + "\n");
+                                //Config.config.textBox1.AppendText(Int32.Parse("056").ToString() + "\r\n");
+                                //Config.config.textBox1.AppendText(Config.config.comboBox5.SelectedIndex.ToString() + "\r\n");
                                 freeSeats.Add(num.First["id"].ToString());
                                 freeSeatsName.Add(num.First["name"].ToString());
                                 one = false;
@@ -574,8 +574,8 @@ namespace RushSeat
                                 int b = Math.Abs(int.Parse(freeSeatsName[i].ToString()) - int.Parse(Config.config.comboBox5.SelectedIndex.ToString()));
                                 if (a < b)  //从freeseats列表里检察可以插入的位置（绝对值从小到大）
                                 {
-                                    //Config.config.textBox1.AppendText("ok!\n");
-                                    //Config.config.textBox1.AppendText(a.ToString()+"    "+b.ToString()+"\n");
+                                    //Config.config.textBox1.AppendText("ok!\r\n");
+                                    //Config.config.textBox1.AppendText(a.ToString()+"    "+b.ToString()+"\r\n");
                                     freeSeats.Insert(i, num.First["id"].ToString());
                                     freeSeatsName.Insert(i, num.First["name"].ToString());
                                     get = true;
@@ -589,32 +589,32 @@ namespace RushSeat
                                 freeSeatsName.Add(num.First["name"].ToString());
                             }
                         }
-                        //Config.config.textBox1.AppendText(freeSeatsName.Count.ToString() + "\n");
+                        //Config.config.textBox1.AppendText(freeSeatsName.Count.ToString() + "\r\n");
                         //foreach (var num in freeSeatsName)
-                            //Config.config.textBox1.AppendText(num.ToString() + "\n");
+                            //Config.config.textBox1.AppendText(num.ToString() + "\r\n");
                         if (Int32.Parse(freeSeatsName[0].ToString()).ToString() == Int32.Parse(Config.config.comboBox5.SelectedIndex.ToString()).ToString()) //有倾向座位
                         {
-                            Config.config.textBox1.AppendText("检索到空闲的倾向座位, 尝试预约...\n");
+                            Config.config.textBox1.AppendText("检索到空闲的倾向座位, 尝试预约...\r\n");
                             return "Success";
                         }
                         else
                         {
-                            //Config.config.textBox1.AppendText(Int32.Parse(freeSeatsName[0].ToString()).ToString() + "    这是freeseat第一个\n");
-                            //Config.config.textBox1.AppendText(Config.config.comboBox5.SelectedIndex.ToString() + "    这是c5\n");
-                            Config.config.textBox1.AppendText("倾向座位已被预约，房间内有其它空座...\n");
+                            //Config.config.textBox1.AppendText(Int32.Parse(freeSeatsName[0].ToString()).ToString() + "    这是freeseat第一个\r\n");
+                            //Config.config.textBox1.AppendText(Config.config.comboBox5.SelectedIndex.ToString() + "    这是c5\r\n");
+                            Config.config.textBox1.AppendText("倾向座位已被预约，房间内有其它空座...\r\n");
                             return "NoMatchSeat";
                         }
                     }
                     else
                     {
-                        Config.config.textBox1.AppendText("倾向座位已被预约，房间内无其它空座...\n");
+                        Config.config.textBox1.AppendText("倾向座位已被预约，房间内无其它空座...\r\n");
                         return "NoFreeSeat";
                     }
                 }
             //}
             //catch
             //{
-            //    Config.config.textBox1.AppendText("获取空座信息出错...可能是连接丢失，也可能是其它问题，请重试\n");
+            //    Config.config.textBox1.AppendText("获取空座信息出错...可能是连接丢失，也可能是其它问题，请重试\r\n");
             //    return "SomethingWrong";
             //}
         }
@@ -641,7 +641,7 @@ namespace RushSeat
                 byte[] data = Encoding.UTF8.GetBytes(buffer.ToString());
                 request.ContentLength = data.Length;
                 request.GetRequestStream().Write(data, 0, data.Length);
-                //Config.config.textBox1.AppendText("正在获取空座信息...\n");
+                //Config.config.textBox1.AppendText("正在获取空座信息...\r\n");
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream stream = response.GetResponseStream();
                 Encoding encoding = Encoding.GetEncoding("UTF-8");
@@ -662,7 +662,7 @@ namespace RushSeat
 
                 if (jObject["data"]["seats"].ToString() != "{}")
                 {
-                    //Config.config.textBox1.AppendText("success\n");
+                    //Config.config.textBox1.AppendText("success\r\n");
                     JToken seats = jObject["data"]["seats"];
 
                     //18/5/5 此处存在BUG
@@ -695,26 +695,26 @@ namespace RushSeat
                     if (freeSeats.Count > Run.lastFreeSeatCount)
                     {
                         Run.lastFreeSeatCount = freeSeats.Count;
-                        Config.config.textBox1.AppendText(roomname + " 成功检索到符合条件座位!\n");
+                        Config.config.textBox1.AppendText(roomname + " 成功检索到符合条件座位!\r\n");
                         return "Success";
                     }
                     else
                     {
                         Run.lastFreeSeatCount = freeSeats.Count;
-                        Config.config.textBox1.AppendText(roomname + " 无符合条件座位...\n");
+                        Config.config.textBox1.AppendText(roomname + " 无符合条件座位...\r\n");
                         return "NoFreeSeat";
                     }
                 }
                 else
                 {
                     Run.lastFreeSeatCount = freeSeats.Count;
-                    Config.config.textBox1.AppendText(roomname + " 无符合条件座位...\n");
+                    Config.config.textBox1.AppendText(roomname + " 无符合条件座位...\r\n");
                     return "NoFreeSeat";
                 }
            }
             catch
             {
-               Config.config.textBox1.AppendText("获取空座信息出错...可能是连接丢失，也可能是其它问题，请重试\n");
+               Config.config.textBox1.AppendText("获取空座信息出错...可能是连接丢失，也可能是其它问题，请重试\r\n");
                 return "SomethingWrong";
             }
         }
@@ -740,7 +740,7 @@ namespace RushSeat
             request.ContentLength = data.Length;
             request.GetRequestStream().Write(data, 0, data.Length);
 
-            Config.config.textBox1.AppendText("正在尝试订座:\n");
+            Config.config.textBox1.AppendText("正在尝试订座:\r\n");
           
             HttpWebResponse response = (HttpWebResponse)request.GetResponse();
             Stream stream = response.GetResponseStream();
@@ -750,23 +750,23 @@ namespace RushSeat
             JObject jObject = JObject.Parse(json);
             if (jObject["status"].ToString() == "success")
             {
-                Config.config.textBox1.AppendText("抢座成功\n");
-                Config.config.textBox1.AppendText("时间：" + jObject["data"]["onDate"].ToString() + ", " + jObject["data"]["begin"].ToString() + "~" + jObject["data"]["end"].ToString() + "\n");
-                Config.config.textBox1.AppendText("地点：" + jObject["data"]["location"].ToString() + "\n");
+                Config.config.textBox1.AppendText("抢座成功\r\n");
+                Config.config.textBox1.AppendText("时间：" + jObject["data"]["onDate"].ToString() + ", " + jObject["data"]["begin"].ToString() + "~" + jObject["data"]["end"].ToString() + "\r\n");
+                Config.config.textBox1.AppendText("地点：" + jObject["data"]["location"].ToString() + "\r\n");
 
                 string msg_time = jObject["data"]["onDate"].ToString().Replace(" ", "").Remove(0, 5);
                 //编辑短信内容
                 if (Config.config.checkBox4.Checked)
                 {
-                    Config.config.textBox1.AppendText("正在编辑短信内容...\n");
-                    strContent += "订座成功\n";
-                    strContent += ("时间：" +  msg_time + jObject["data"]["begin"].ToString().Replace(" ", "") + "~" + jObject["data"]["end"].ToString().Replace(" ", "") + " \n");
+                    Config.config.textBox1.AppendText("正在编辑短信内容...\r\n");
+                    strContent += "订座成功\r\n";
+                    strContent += ("时间：" +  msg_time + jObject["data"]["begin"].ToString().Replace(" ", "") + "~" + jObject["data"]["end"].ToString().Replace(" ", "") + " \r\n");
                     strContent += ("地点：" + jObject["data"]["location"].ToString()).Replace("信息科学分馆", "") + "【RS】";
                     strMob += Config.config.textBox3.Text.ToString();
                 }
                 //debug
-                Config.config.textBox1.AppendText("(debug)订座成功返回信息" + "\n");
-                Config.config.textBox1.AppendText(jObject.ToString() + "\n");
+                Config.config.textBox1.AppendText("(debug)订座成功返回信息" + "\r\n");
+                Config.config.textBox1.AppendText(jObject.ToString() + "\r\n");
                 //Config.config.textBox1.AppendText("短信内容：" + strContent);
 
                 return "Success";
@@ -774,16 +774,16 @@ namespace RushSeat
             else if (jObject["message"].ToString() == "系统可预约时间为 22:45 ~ 23:50")  //message中文判断
             {
                 //只有在启动倒计时预约明日座位才会返回notattime
-                //Config.config.textBox1.AppendText("系统尚未开放...\n");
+                //Config.config.textBox1.AppendText("系统尚未开放...\r\n");
                 //debug
-                //Config.config.textBox1.AppendText(jObject.ToString() + "\n");
+                //Config.config.textBox1.AppendText(jObject.ToString() + "\r\n");
                 return "NotAtTime";
             }
             else
             {
                 //debug
-                Config.config.textBox1.AppendText("(debug)订座失败返回信息" + "\n");
-                Config.config.textBox1.AppendText(jObject.ToString() + "\n");
+                Config.config.textBox1.AppendText("(debug)订座失败返回信息" + "\r\n");
+                Config.config.textBox1.AppendText(jObject.ToString() + "\r\n");
                 return "Failed";
             }            
         }
@@ -851,7 +851,7 @@ namespace RushSeat
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a, b, c, d) => { return true; });
             request.Timeout = 5000;
 
-            Config.config.textBox1.AppendText("正在获取指定房间座位信息...\n");
+            Config.config.textBox1.AppendText("正在获取指定房间座位信息...\r\n");
             try
             {
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
@@ -860,7 +860,7 @@ namespace RushSeat
                 StreamReader streamReader = new StreamReader(stream, encoding);
                 string json = streamReader.ReadToEnd();
                 JObject jObject = JObject.Parse(json);
-                Config.config.textBox1.AppendText(jObject["status"].ToString() + "\n");
+                Config.config.textBox1.AppendText(jObject["status"].ToString() + "\r\n");
                 if (jObject["status"].ToString() == "success")
                 {
                     JToken layout = jObject["data"]["layout"];
